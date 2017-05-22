@@ -1,0 +1,28 @@
+.fontmenu01 {
+	font-weight: bold;
+	color: #336699;
+}
+.menubgcolor04 {
+	background-color: #cecece;
+}
+.menubgcolor05 {
+	background-color: #84A2C6;
+}
+a:link{text-decoration:none ;}
+a:visited {text-decoration:none ; }
+a:hover {text-decoration:none ; }
+a:active {text-decoration:none ; } 
+
+
+
+.contentTab{ width:100%; border:1px #80afc9 solid; border-top:none;}
+.contentTab td{ padding:1px;}
+.contentTab td.Left{text-align:left; padding:1px;}
+.subTab { border:1px #e0eaf0 solid; border-top:1px #b0d5e9 solid; width:100%; margin-bottom:0px; }
+.subTab th{ text-align:left; background-color:#85b0c8; padding:4px; }
+.subTab td{ padding:2px; border-top:1px #b0d5e9 solid; border-right:1px #b0d5e9 solid; color:#666;color:black;}
+.subTab td.Lable{ text-align:right;  background-color:#edf1f3; color:#333366;}
+.subTab td.contenTd{ text-align:left; color:black;}
+
+.subTab tr.Title{ background-color:#bed1dc; text-align: center;}
+

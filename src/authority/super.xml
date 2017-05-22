@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+    <module text="营业结算" id="1" pid="0">
+        <node text="营业结算" id="1.1" pid="1" url="query/query.do">
+        </node>
+    </module>
+     <module text="账目统计" id="2" pid="0">
+        <node text="存款统计" id="2.1" pid="2" url="query/queryCktj.do">
+        </node>
+        <node text="小组营业统计" id="2.2" pid="2" url="query/queryXzyytj.do">
+        </node>
+    </module>
+    <module text="账目明细" id="3" pid="0">
+        <node text="存款明细" id="3.1" pid="3" url="query/queryCkmx.do">
+        </node>
+        <node text="取款明细" id="3.2" pid="3" url="query/queryQkmx.do">
+        </node>
+        <node text="消费明细" id="3.3" pid="3" url="query/queryXfmx.do">
+        </node>
+        <node text="计次明细" id="3.4" pid="3" url="query/queryXfjcmx.do">
+        </node>
+    </module>
+    <module text="账目报表" id="4" pid="0">
+        <node text="开户人员报表" id="4.1" pid="4" url="report/khrybbReport.do">
+        </node>
+        <node text="挂失办卡人员报表" id="4.2" pid="4" url="report/gsbkrybReport.do">
+        </node>
+        <node text="撤户人员报表" id="4.3" pid="4" url="report/chrybbReport.do">
+        </node>
+        <node text="纠错人员报表" id="4.4" pid="4" url="report/jcrybbReport.do">
+        </node>
+    </module>
+
+    <!-- <module text="11" id="3" pid="0">
+        <node text="人员管理" id="3.1" pid="3" url="user/listUser.do">
+            <auth name="userlist" button=".add.del.edit.empower"/>
+        </node>
+
+    </module> -->
+</system>
