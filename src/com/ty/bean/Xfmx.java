@@ -4,7 +4,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 消费明细实体类
  */
 @Table("view_dz_xfmx")
 public class Xfmx {

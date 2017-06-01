@@ -1,13 +1,9 @@
 package com.ty.bean;
 
 import org.nutz.dao.entity.annotation.Table;
-import org.nutz.dao.entity.annotation.View;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 存款统计实体类
  */
 @Table("view_dz_cktj")
 public class Cktj {

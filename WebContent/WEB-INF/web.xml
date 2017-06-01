@@ -19,6 +19,20 @@
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
+  
+  
+  <servlet>  
+    <servlet-name>PictureCheckCodeServlet</servlet-name>  
+    <servlet-class>com.ty.user.PictureCheckCodeServlet</servlet-class>  
+  </servlet>  
+  
+  <servlet-mapping>  
+    <servlet-name>PictureCheckCodeServlet</servlet-name>  
+    <url-pattern>/PictureCheckCodeServlet</url-pattern>  
+  </servlet-mapping> 
+  
+ 
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>

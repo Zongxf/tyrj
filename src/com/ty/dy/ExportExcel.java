@@ -1,26 +1,30 @@
 package com.ty.dy;
  import java.io.File;  
- import java.io.FileNotFoundException;  
- import java.io.FileOutputStream;  
- import java.io.IOException;  
+import java.io.FileNotFoundException;  
+import java.io.FileOutputStream;  
+import java.io.IOException;  
   
+
+
+
  import org.apache.poi.hssf.usermodel.HSSFCell;  
- import org.apache.poi.hssf.usermodel.HSSFCellStyle;  
- import org.apache.poi.hssf.usermodel.HSSFFont;  
- import org.apache.poi.hssf.usermodel.HSSFRichTextString;  
- import org.apache.poi.hssf.usermodel.HSSFRow;  
- import org.apache.poi.hssf.usermodel.HSSFSheet;  
- import org.apache.poi.hssf.usermodel.HSSFWorkbook;  
- import org.apache.poi.hssf.util.HSSFColor;  
- import org.apache.poi.hssf.util.Region;  
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;  
+import org.apache.poi.hssf.usermodel.HSSFFont;  
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;  
+import org.apache.poi.hssf.usermodel.HSSFRow;  
+import org.apache.poi.hssf.usermodel.HSSFSheet;  
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;  
+import org.apache.poi.hssf.util.HSSFColor;  
+import org.apache.poi.hssf.util.Region;  
   
  /**  
   * EXCEL报表工具类.  
   *   
-  * @author caoyb  
-  * @version $Revision:$  
+  * @author zxf
+  * 
   */ 
- public class ExportExcel {  
+ @SuppressWarnings("deprecation")
+public class ExportExcel {  
   
      private HSSFWorkbook wb = null;  
   
@@ -74,7 +78,7 @@ package com.ty.dy;
       * @param colSum  
       *            该报表的列数  
       */ 
-     public void createNormalHead(String headString, int colSum) {  
+	public void createNormalHead(String headString, int colSum) {  
   
          HSSFRow row = sheet.createRow(0);  
   
@@ -113,7 +117,7 @@ package com.ty.dy;
       * @param colSum  
       *            需要合并到的列索引  
       */ 
-     public void createNormalTwoRow(String[] params, int colSum) {  
+	public void createNormalTwoRow(String[] params, int colSum) {  
         HSSFRow row1 = sheet.createRow(1);  
          row1.setHeight((short) 300);  
   

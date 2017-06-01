@@ -5,7 +5,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 存款明细实体类
  */
 @Table("view_dz_ckmx")
 public class Ckmx {

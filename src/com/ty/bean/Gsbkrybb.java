@@ -4,7 +4,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 挂失办卡实体类
  */
 @Table("view_dz_gsbkbb")
 public class Gsbkrybb {

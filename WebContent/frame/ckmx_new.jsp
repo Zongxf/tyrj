@@ -7,6 +7,15 @@
 <title>存款明细</title>
 <script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
 <script type="text/javascript" src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>
+<style type="text/css">
+.bt{
+  height:25px;
+  width:50px;
+  background-image:url('${ctx}/img/bt.png');
+  background-repeat: repeat-x;
+}
+</style>
 </head>
 <body>
       <span>
@@ -26,12 +35,12 @@
                <span class="btr">
                <button onclick="search();">查询</button>
                <button onclick="exportXml();">导出</button>
-               <button>打印</button>
+               <button onclick="doprint();">打印</button>
                </span>
-           <span style="margin-left:100px;">存款总额：</span>
+           <span style="margin-left:10px;">存款总额：</span>
             <input type="text" id="zckje" value=""  style="width:80px;height:25px;"disabled="disabled"/>
             
-          <div style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" id="tt"></div>
+          <div id="tt" style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" ></div>
 
 </body>
 <script type="text/javascript" src="${ctx }/common/export.js"></script>         
@@ -196,6 +205,61 @@
                 	alert(message);  
                 }  
             });  
+        }
+        
+        
+      function doprint(){
+        	//CheckIsInstall();
+        	//alert(content);
+        	var LODOP = getLodop(); 
+        	var n = manager.rows.length;
+        	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}table{width:100%;}.t{font-size:20px;font-weight:blod;}</style>"
+        	           +""
+        	           +"<table><thead><tr><td width='100%' colspan='7'class='t'>存款明细表</td></tr><tr>"
+        	           +"<td width='14.2%'class='t'>人员编号</td>"
+        	           +"<td width='14.2%'class='t'>姓名</td>"
+        	           +"<td width='14.2%'class='t'>部门</td>"
+        	           +"<td width='14.2%'class='t'>存款金额</td>"
+        	           +"<td width='14.2%'class='t'>剩余金额</td>"
+        	           +"<td width='15.2%'class='t'>存款日期</td>"
+        	           +"<td width='14.2%'class='t'>存款类型</td></tr></thead><tbody>";
+        	
+        	  for (var i = 0, l = n; i < l; i++) {
+        		  //alert("123");
+         	    var lx=manager.rows[i].lx;
+         	    var rybh=manager.rows[i].bh;
+         	    var xm=manager.rows[i].xm;
+         	    var bm=manager.rows[i].bm;
+         	    var ckje=manager.rows[i].ckje;
+         	    var syje=manager.rows[i].syje;
+         	    var ckrq=manager.rows[i].ckrq;
+         	    
+         	    
+         	    if(lx=="1"){
+         	    	lx="现金存款";
+         	    }else if(lx=="2"){
+         	    	lx="补助存款";
+         	    }
+         	 
+                 str =str +"<tr><td width='14.2%'>" +rybh 
+                          + "</td><td width='14.2%'>"+xm 
+                          + "</td><td width='14.2%'>"+bm 
+                          + "</td><td width='14.2%'>"+ckje 
+                          + "</td><td width='14.2%'>"+syje 
+                          + "</td><td width='15.2%'>"+ckrq 
+                          + "</td><td width='14.2%'>"+lx 
+                          +"</td></tr></tbody>";  
+         }  
+        	 str=str+"<tfoot><tr><td width='100%' colspan='7' tindex='1'>"
+        	 +" 当前是第<font tdata='PageNO' format='ChineseNum' color='blue'>##</font>页</span>/共<font tdata='PageCount' format='ChineseNum' color='blue'>##</font></span>页，"
+        	 +"</td></tr></tfoot></table>";
+        	LODOP.PRINT_INIT("存款明细打印表格");
+        	LODOP.ADD_PRINT_HTM(10,0,"100%","100%",str);
+        	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
+        	LODOP.NewPageA();
+        		LODOP.PREVIEW();		       
+        	
+        	
         }
          </script>
 </html>

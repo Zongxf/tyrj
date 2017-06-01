@@ -1,5 +1,7 @@
 package com.ty.framework.action;
-
+/**
+ * 基础类
+ */
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,9 +20,7 @@ import com.ty.util.Page;
 
 public class BaseAction
 {
-	/**
-	 * 
-	 */
+	
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public BaseAction()
@@ -115,7 +115,7 @@ public class BaseAction
 
 		Calendar lastDate = Calendar.getInstance();
 		lastDate.set(y, m - 1, 1);
-		lastDate.add(Calendar.MONTH, -1);// 减一个月，变为下月的1�??
+		lastDate.add(Calendar.MONTH, -1);// 减一个月，变为下月的1�??
 		Date date = lastDate.getTime();
 		return date;
 

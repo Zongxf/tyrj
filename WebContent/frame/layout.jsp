@@ -2,13 +2,16 @@
 <%@page import="java.lang.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/header.jsp"%>
+<%
+  String s = request.getParameter("s");
+  session.setAttribute("username", s);
+%>
 <jsp:include page="/common/comm.jsp" flush="false"></jsp:include>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>${appname }</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript">
 
 
@@ -85,12 +88,35 @@ var tab = null;
 		var url=window.location.href;
 		index=url.indexOf("?")+3;
 		ss=url.substr(index);
+		
 		//alert(ss);
 		if(ss=="super"){
 			document.getElementById("role").innerHTML="超级管理员";
 		}else{
 			document.getElementById("role").innerHTML=ss;
 		}
+		
+		
+		var xjck = "<%= session.getAttribute("xjbh")%>";
+		var bzck = "<%= session.getAttribute("btbh")%>";
+		var qcje = "<%= session.getAttribute("qcbh")%>";
+		if(xjck!="null"){
+			$("#xjck").val(xjck);
+		}else{
+			$("#xjck").val("0.0");
+		}
+		if(bzck!="null"){
+			$("#bzck").val(bzck);
+		}else{
+			$("#bzck").val("0.0");
+		}
+		
+		if(qcje!="null"){
+			$("#qcje").val(qcje);
+		}else{
+			$("#qcje").val("0.0");
+		}
+		
 	});
 	
 	
@@ -110,22 +136,41 @@ var tab = null;
 	}
 	
 	
+	window.setInterval(showAll, 60000); 
+	function showAll(){
+		$.ajax({
+			url:"${ctx}/timer/showAll.do",
+			type:"post",
+			dataType:"json",
+			success:function(){
+				var xjck = "<%= session.getAttribute("xjbh")%>";
+				var bzck = "<%= session.getAttribute("btbh")%>";
+				var qcje = "<%= session.getAttribute("qcbh")%>";
+				if(xjck!="null"){
+					$("#xjck").val(xjck);
+				}else{
+					$("#xjck").val("0.0");
+				}
+				if(bzck!="null"){
+					$("#bzck").val(bzck);
+				}else{
+					$("#bzck").val("0.0");
+				}
+				
+				if(qcje!="null"){
+					$("#qcje").val(qcje);
+				}else{
+					$("#qcje").val("0.0");
+				}
+			},
+			error:function(){
+				alert("定时器加载失败！");
+			}
+		});
 	
-	/* window.setInterval(showalert, 1802000); 
-	function showalert() 
-	{ 
-		  $.ajax({
-		       url:'${ctx }/user/checkLogin.do', //后台处理程序
-		       type:'post',         //数据发送方式
-		       dataType:'json',     //接受数据格式
-		       success:function(data){
-		    		if (!data.success) {
-		    			 location.reload() ;
-					} 
-		    	   }
-		     }); 
-	   
-	} */
+	}
+	
+	
 	
 </script>
 <style type="text/css">
@@ -221,6 +266,22 @@ body {
 	font-size:30px;
 	background: url('${ctx }/img/logo.png') no-repeat 20px 10px;
 }
+.l-topmenu-dsq{
+    position: absolute;
+	height: 26px;
+	line-height: 24px;
+	right: 30%;
+	top: 10px;
+	color: #ffffff;
+}
+.l-topmenu-dsq input{
+   width:80px;
+   height:30px;
+   line-height: 26px;
+   border-radius:10px;
+   font-size:20px;
+}
+
 
 .l-topmenu-welcome {
 	position: absolute;
@@ -241,6 +302,10 @@ body {
 	<div id="pageloading"></div>
 	<div id="topmenu" class="l-topmenu">
 		<div class="l-topmenu-logo">${appname }</div>
+		<div class="l-topmenu-dsq">
+		     现金存款<input type="text"id="xjck"value="" disabled="disabled"/>
+		    圈存金额<input type="text"id="qcje" value=""disabled="disabled"/>
+		    补助存款<input type="text"id="bzck"value=""disabled="disabled"/></div>
 		<div class="l-topmenu-welcome">
 			<span class="space">欢迎，<span id="role"></span>&nbsp;&nbsp;|
 			

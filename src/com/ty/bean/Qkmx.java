@@ -3,7 +3,7 @@ package com.ty.bean;
 import org.nutz.dao.entity.annotation.Table;
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 取款明细实体类
  */
 @Table("view_dz_qkmx")
 public class Qkmx {

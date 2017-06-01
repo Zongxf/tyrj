@@ -1,7 +1,6 @@
 package com.ty.user;
 
 import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
 @Table("WT_GLY")
@@ -13,7 +12,7 @@ public class User {
 	@Column
 	private String Gly_pass;
 	@Column
-	private String Gly_bz;//����Ա��־
+	private String Gly_bz;
 	@Column
 	private String Gly_phone;
 	public String getGly_no() {

@@ -22,7 +22,7 @@ public class Page implements java.io.Serializable {
 	private int totalProperty;
 
 	/** 分页结果 */
-	private List list;
+	private List<?> list;
 
 	/** 开始页码 */
 	private int pageIndex;
@@ -45,11 +45,11 @@ public class Page implements java.io.Serializable {
 	}
 
 	
-	public List getList() {
+	public List<?> getList() {
 		return list;
 	}
 
-	public void setList(List list) {
+	public void setList(List<?> list) {
 		this.list = list;
 	}
 

@@ -1,5 +1,7 @@
 package com.ty.user;
-
+/**
+ * 用户登陆类
+ */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,7 +18,6 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.impl.NutDao;
 import org.nutz.dao.impl.sql.callback.QueryRecordCallback;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
 import org.nutz.ioc.annotation.InjectName;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -57,10 +58,12 @@ public class UserAction extends BaseAction
 	}
 	
 	@At()
-	@Ok("jsp:jsp/changepasswd")
+	@Ok("jsp:jsp/user/changepasswd")
 	public void changePasswd()
 	{
 	}
+	
+	
 	
 	@At()
 	@Ok("json")
@@ -125,7 +128,6 @@ public class UserAction extends BaseAction
 
 		try
 		{
-			// �ۺ�ϵͳ�û���¼
 			User user = userService.getUser(map);
 			
 			if (null != user)
@@ -148,9 +150,8 @@ public class UserAction extends BaseAction
 						SAXReader saxReader = new SAXReader();
 						Document document = saxReader.read(Files.findFile("authority/" + user.getGly_no() + ".xml"));
 
-						// �γɲ˵���Ϣ
-						List list = document.selectNodes("//module");
-						Iterator iter = list.iterator();
+						List<?> list = document.selectNodes("//module");
+						Iterator<?> iter = list.iterator();
 						Node node = null;
 						while (iter.hasNext())
 						{
@@ -177,7 +178,6 @@ public class UserAction extends BaseAction
 
 						session.setAttribute("nodelist", nodelist);
 
-						// ��ȡȨ����Ϣ
 						list = document.selectNodes("//module/node/auth");
 						iter = list.iterator();
 
@@ -219,5 +219,25 @@ public class UserAction extends BaseAction
 		return "logout";
 
 	}
+	
+	 //验证校验码
+		@At()
+		@Ok("json")
+		@Filters
+		public boolean checkYZM(HttpServletRequest req)
+		{
+			String y1 = req.getParameter("yzm");
+			y1 = y1.toUpperCase();
+			HttpSession session=req.getSession(true);
+			String y2 = (String) session.getAttribute("yzm");
+			y2 = y2.toUpperCase();
+			//System.out.println(y1);
+			//System.out.println(y2);
+			if(y1.equals(y2)){
+				 return true;
+			}else{
+                 return false;
+                 }
+		}
 	
 }

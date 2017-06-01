@@ -7,6 +7,7 @@
 <title>取款明细</title>
 <script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
 <script type="text/javascript" src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>
 </head>
 <body>
 <span>
@@ -18,7 +19,7 @@
                <span class="btr">
                <button onclick="search();">查询</button>
                <button onclick="exportXml();">导出</button>
-               <button>打印</button></span>
+               <button onclick="doprint();">打印</button></span>
              <span style="margin-left:41px;">取款总额：</span><input type="text"id="zqkje" style="width:80px;height:25px;"disabled="disabled"/>
           
            <div style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" id="tt"></div>
@@ -26,11 +27,12 @@
 <script type="text/javascript">
         var manager = null;
         var dailog = null;
+    	var date = new Date();
+       	var year = date.getFullYear();
+       	var month = date.getMonth() + 1;
+       	var strDate = date.getDate();
         $(function () {
-        	var date = new Date();
-	       	var year = date.getFullYear();
-	       	var month = date.getMonth() + 1;
-	       	var strDate = date.getDate();
+        
 	       	var startdate=year+"-"+month+"-"+strDate+" 00:00:00";
 	       	var enddate=year+"-"+month+"-"+strDate+" 23:59:59";
 	       	$("#dateb").val(startdate);    //默认起始时间为系统当天
@@ -81,10 +83,13 @@
                     width: '13.5%'
                 }],
                 pageSize: 200,
-                pageSizeOptions: [100, 200],
+                pageSizeOptions: [100, 200,400,800,1000,2000],
                 url: '${ctx }/query/queryQkmxJson.do',
                 width: '99%',
                 height: '98%',
+                onBeforeShowData:function(){
+                	$("#zqkje").val("");
+                },
                 onAfterShowData:function(data){
                 	//alert(JSON.stringify(data));
                 	var d = data.ZQK;
@@ -152,7 +157,7 @@
                 dataType:"json",
                 success: function (data) {  
                 	if(data.success){
-                		alert(data.fileName);
+                		//alert(data.fileName);
                 		window.location.href="${ctx}/export/downloadFile.do";
                 	}else{
                 		alert("导出失败！");
@@ -162,6 +167,61 @@
                 	alert(message);  
                 }  
             });  
+        }
+      
+        
+        //打印
+         function doprint(){
+        	//CheckIsInstall();
+        	//alert(content);
+        	var LODOP = getLodop(); 
+        	var n = manager.rows.length;
+        	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}table{width:100%;}.t{font-size:20px;font-weight:blod;}</style>"
+        	           +""
+        	           +"<table><thead><tr><td width='100%' colspan='8'class='t'>取款明细表<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
+        	           +"<td width='12.5%'class='t'>人员编号</td>"
+        	           +"<td width='12.5%'class='t'>姓名</td>"
+        	           +"<td width='12.5%'class='t'>部门</td>"
+        	           +"<td width='12.5%'class='t'>取款金额</td>"
+        	           +"<td width='12.5%'class='t'>取现金</td>"
+        	           +"<td width='12.5%'class='t'>取补贴</td>"
+        	           +"<td width='12.5%'class='t'>剩余金额</td>"
+        	           +"<td width='12.5%'class='t'>取款时间</td></tr></thead><tbody>";
+        	
+        	  for (var i = 0, l = n; i < l; i++) {
+        		  //alert("123");
+         	  var rybh=manager.rows[i].bh;
+            	    var xm=manager.rows[i].xm;
+            	    var bm=manager.rows[i].bm;
+            	    var qkje=manager.rows[i].qkje;
+            	    var syje=manager.rows[i].syje;
+            	    var qksj=manager.rows[i].qksj;
+            	    var qxj=manager.rows[i].qxj;
+            	    var qbt=manager.rows[i].qbt;
+         	    
+         	    
+         	 
+                 str =str +"<tr><td width='12.5%'>" +rybh 
+                          + "</td><td width='12.5%'>"+xm 
+                          + "</td><td width='12.5%'>"+bm 
+                          + "</td><td width='12.5%'>"+qkje 
+                          + "</td><td width='12.5%'>"+qxj
+                          + "</td><td width='12.5%'>"+qbt
+                          + "</td><td width='12.5%'>"+syje 
+                          + "</td><td width='12.5%'>"+qksj
+                          +"</td></tr></tbody>";  
+         }  
+        	 str=str+"<tfoot><tr><td width='100%' colspan='8' tindex='1'>"
+        	 +" 当前是第<font tdata='PageNO' format='ChineseNum' color='blue'>##</font>页</span>/共<font tdata='PageCount' format='ChineseNum' color='blue'>##</font></span>页，"
+        	 +"</td></tr></tfoot></table>";
+        	LODOP.PRINT_INIT("取款明细打印表格");
+        	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
+        	LODOP.ADD_PRINT_HTM(10,0,"100%","100%",str);
+        	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
+        	LODOP.NewPageA();
+        		LODOP.PREVIEW();		       
+        	
+        	
         }
 </script>         
        

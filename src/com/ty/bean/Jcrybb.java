@@ -4,7 +4,8 @@ import org.nutz.dao.entity.annotation.Table;
 
 
 /**
- * Created by Administrator on 2017/3/24.
+ * 纠错人员报表实体类
+ * 
  */
 @Table("view_dz_jcrybb")
 public class Jcrybb {
