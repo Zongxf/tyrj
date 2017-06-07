@@ -19,9 +19,7 @@
 	background-position: center;
 	font-size:12px;
 }	
-button {
-	background-image:url(${ctx }/img/btn_bg01.gif) ;
-}
+
 
 .unityTabTitle{ width:100%; height:27px; background:url('${pageContext.request.contextPath}/images/img/add_bg2.gif') repeat-x;}
 .unityTabTitle th{width:200px; height:27px; background:url(${pageContext.request.contextPath}/images/img/add_bg1.gif) no-repeat left top; text-align:left; color:#0066cc; text-indent:1em;}
@@ -57,6 +55,9 @@ button {
 <script src="${ctx }/ligerUI/123/js/plugins/ligerGrid.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerResizable.js" type="text/javascript"></script>
 <link href="${ctx }/ligerUI/123/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<link href="${ctx }/echarts/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<script src="${ctx }/echarts/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="${ctx }/common/comm.css" rel="stylesheet" type="text/css"/>
 
    
 

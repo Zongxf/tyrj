@@ -11,19 +11,31 @@
 </head>
 <body>
 <span>
-                   起始日期： <input type="text" id="dateb" onclick="WdatePicker({startDate: '%y-%M-01 00:00:00' ,maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">至
-                   终止日期： <input type="text" id="datee" onclick="WdatePicker({startDate: '%y-%M-%d 23:59:59' ,maxDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
-                   人员编号：<input type="text" id="bh"style="width:100px;"/>
-                   姓名：<input type="text" id="xm"style="width:100px;"/></span>
-             
-               <span class="btr">
-               <button onclick="search();">查询</button>
-               <button onclick="exportXml();">导出</button>
-               <button onclick="doprint();">打印</button></span>
-             <span style="margin-left:41px;">取款总额：</span><input type="text"id="zqkje" style="width:80px;height:25px;"disabled="disabled"/>
-          
-           <div style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" id="tt"></div>
-         
+<div class="container center">
+		  <div class="searchBox center">
+		      <div class="form-inline">
+					<label class="control-label" > 起始日期：</label>
+			        <input type="text" id="dateb" onclick="WdatePicker({startDate: '%y-%M-01 00:00:00' ,maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>至
+			        <label class="control-label" > 终止日期：</label> 
+			        <input type="text" id="datee" onclick="WdatePicker({startDate: '%y-%M-%d 23:59:59' ,maxDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			        <label class="control-label" > 人员编号：</label>
+			        <input type="text" id="bh"/>
+			    </div>
+			    <div class="form-inline" style="margin-top:10px;">
+			        <label class="control-label" > 人员姓名：</label>
+			        <input type="text" id="xm"/></span> &nbsp; &nbsp; &nbsp; &nbsp;
+		               <span class="btn-group">
+		               <button onclick="search();" class="btn btn-default"><i class="icon-search"></i>查询</button>
+		               <button onclick="exportXml();"class="btn btn-default"><i class="icon-upload"></i>导出</button>
+		               <button onclick="doprint();"class="btn btn-default"><i class="icon-print"></i>打印</button>
+		               </span>
+		        </div>    
+		   </div>      
+           <div class="contentBox center">
+	           <span style="margin-left:10px;">取款总额：</span><input type="text"id="zqkje" style="height:25px;"disabled="disabled"/>
+	           <div style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" id="tt"></div>
+           </div>
+</div>          
 <script type="text/javascript">
         var manager = null;
         var dailog = null;
@@ -125,31 +137,39 @@
         }
         
       //导出excel
-        function exportXml() {
+          function exportXml() {
         	var data="";
         	var title="";
         	var count="";
-            for (var i = 0, l = manager.rows.length; i < l; i++) {
-            	    var rybh=manager.rows[i].bh;
-            	    var xm=manager.rows[i].xm;
-            	    var bm=manager.rows[i].bm;
-            	    var qkje=manager.rows[i].qkje;
-            	    var syje=manager.rows[i].syje;
-            	    var qksj=manager.rows[i].qksj;
-            	    var qxj=manager.rows[i].qxj;
-            	    var qbt=manager.rows[i].qbt;
-            	    
-                    data =data + rybh + "&"+xm+ "&"+bm+ "&"+qkje+ "&"+qxj+ "&"+qbt+ "&"+syje+ "&"+qksj+ "&";  
-            }  
-            title = "取款明细&人员编号&姓名&部门&取款金额&取现金&取补贴&剩余金额&取款时间&";
-            var zqkje = $("#zqkje").val();
-            //alert(zxfje);
-    	    if(zqkje==""){
-    	    	zqkje="0";
-    	    }
-            count = "取款总金额：&"+zqkje+"&";
+        	var bh = $("#bh").val();
+        	var xm = $("#xm").val();
+        	var dateb = $("#dateb").val();
+        	var datee = $("#datee").val();
+        	if(bh!=""){
+        		data =data+"bh:"+bh+"&";
+        	}
+        	if(xm!=""){
+        		data =data+"xm:"+xm+"&";
+        	}
+        	if(dateb!=""){
+        		data =data+"dateb:"+dateb+"&";
+        	}
+        	if(datee!=""){
+        		data =data+"datee:"+datee+"&";
+        	}
+        	
+        	
+        	
+            
+        	 title = "取款明细&人员编号&姓名&部门&取款金额&取现金&取补贴&剩余金额&取款时间&";
+             var zqkje = $("#zqkje").val();
+             //alert(zxfje);
+     	    if(zqkje==""){
+     	    	zqkje="0";
+     	    }
+             count = "取款总金额：&"+zqkje+"&";
             $.ajax({  
-                url: '${ctx}/export/exportCktj.do',  
+                url: '${ctx}/export_new/exportCkmx.do',  
                 data: {  
                 	"data":data,"title":title,"count":count
                 },
@@ -158,7 +178,7 @@
                 success: function (data) {  
                 	if(data.success){
                 		//alert(data.fileName);
-                		window.location.href="${ctx}/export/downloadFile.do";
+                		window.location.href="${ctx}/export_new/downloadFile.do";
                 	}else{
                 		alert("导出失败！");
                 	}
@@ -172,13 +192,16 @@
         
         //打印
          function doprint(){
-        	//CheckIsInstall();
-        	//alert(content);
-        	var LODOP = getLodop(); 
-        	var n = manager.rows.length;
-        	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}table{width:100%;}.t{font-size:20px;font-weight:blod;}</style>"
-        	           +""
-        	           +"<table><thead><tr><td width='100%' colspan='8'class='t'>取款明细表<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
+        	CheckIsInstall();
+        	var bh = $("#bh").val();
+        	var xm = $("#xm").val();
+        	var dateb = $("#dateb").val();
+        	var datee = $("#datee").val();
+        	
+        	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}body,table{width:90%;margin-left:40px;background-color:#ffffff;}.t{font-size:20px;font-weight:blod;}</style>"
+        	           +"<table><thead><tr><td width='100%' colspan='8'class='t'>取款明细表"
+        	           +"<span style='float:left;font-size:15px;margin-left:10px;'>总取款金额："+$("#zqkje").val()+"</span>"
+        	           +"<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
         	           +"<td width='12.5%'class='t'>人员编号</td>"
         	           +"<td width='12.5%'class='t'>姓名</td>"
         	           +"<td width='12.5%'class='t'>部门</td>"
@@ -187,42 +210,53 @@
         	           +"<td width='12.5%'class='t'>取补贴</td>"
         	           +"<td width='12.5%'class='t'>剩余金额</td>"
         	           +"<td width='12.5%'class='t'>取款时间</td></tr></thead><tbody>";
-        	
-        	  for (var i = 0, l = n; i < l; i++) {
-        		  //alert("123");
-         	  var rybh=manager.rows[i].bh;
-            	    var xm=manager.rows[i].xm;
-            	    var bm=manager.rows[i].bm;
-            	    var qkje=manager.rows[i].qkje;
-            	    var syje=manager.rows[i].syje;
-            	    var qksj=manager.rows[i].qksj;
-            	    var qxj=manager.rows[i].qxj;
-            	    var qbt=manager.rows[i].qbt;
-         	    
+        	           $.ajax({  
+        	                url: '${ctx}/query_print/queryQkmxJson.do',  
+        	                data: {  
+        	                	"bh":bh,"xm":xm,"dateb":dateb,"datee":datee
+        	                },
+        	                type:"post",
+        	                dataType:"json",
+        	                success: function (data) { 
+        	                	var LODOP = getLodop(); 
+        	                	 for(var i = 0;i<data.length;i++){
+        	                		 var t = data[i].bh;
+        	                		 var b = data[i].bm;
+        	                		 var x = data[i].xm;
+        	                		 var c = data[i].qkje;
+        	                		 var s = data[i].syje;
+        	                		 var ck = data[i].qksj;
+        	                		 var qxj = data[i].qxj;
+        	                		 var qbt = data[i].qbt;
+        	                		 str =str +"<tr><td width='12.5%'>" +t 
+                                     + "</td><td width='12.5%'>"+x 
+                                     + "</td><td width='12.5%'>"+b 
+                                     + "</td><td width='12.5%'>"+c 
+                                     + "</td><td width='12.5%'>"+qxj
+                                     + "</td><td width='12.5%'>"+qbt
+                                     + "</td><td width='12.5%'>"+s 
+                                     + "</td><td width='12.5%'>"+ck
+                                     +"</td></tr>";  
+        	                    	 }
+        	                	
+        	                	 str=str+"</tbody><tfoot><tr><td width='100%' colspan='8' tindex='1'>"
+        	                	 +" 当前是第<font tdata='PageNO' format='0' color='black'>##</font>页</span>/共<font tdata='PageCount' format='0' color='black'>##</font></span>页，"
+        	                	 +"</td></tr></tfoot></table>";
+        	                	LODOP.PRINT_INIT("取款明细打印表格");
+        	                	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
+        	                	LODOP.ADD_PRINT_HTM(25,0,"100%","100%",str);
+        	                	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
+        	                	LODOP.NewPageA();
+        	                		LODOP.PREVIEW();
+        	                },  
+        	                error: function (message) {  
+        	                	alert(message);  
+        	                }  
+        	            });  
          	    
          	 
-                 str =str +"<tr><td width='12.5%'>" +rybh 
-                          + "</td><td width='12.5%'>"+xm 
-                          + "</td><td width='12.5%'>"+bm 
-                          + "</td><td width='12.5%'>"+qkje 
-                          + "</td><td width='12.5%'>"+qxj
-                          + "</td><td width='12.5%'>"+qbt
-                          + "</td><td width='12.5%'>"+syje 
-                          + "</td><td width='12.5%'>"+qksj
-                          +"</td></tr></tbody>";  
+                 
          }  
-        	 str=str+"<tfoot><tr><td width='100%' colspan='8' tindex='1'>"
-        	 +" 当前是第<font tdata='PageNO' format='ChineseNum' color='blue'>##</font>页</span>/共<font tdata='PageCount' format='ChineseNum' color='blue'>##</font></span>页，"
-        	 +"</td></tr></tfoot></table>";
-        	LODOP.PRINT_INIT("取款明细打印表格");
-        	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
-        	LODOP.ADD_PRINT_HTM(10,0,"100%","100%",str);
-        	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
-        	LODOP.NewPageA();
-        		LODOP.PREVIEW();		       
-        	
-        	
-        }
 </script>         
        
 </body>

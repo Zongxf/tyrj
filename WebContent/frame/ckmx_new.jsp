@@ -181,13 +181,13 @@
             
             title = "存款明细&人员编号&姓名&部门&存款金额&剩余金额&存款日期&存款类型&";
             var zckje = $("#zckje").val();
-            alert(zckje);
+            //alert(zckje);
     	    if(zckje==""){
     	    	zckje="0";
     	    }
             count = "存款总金额：&"+zckje+"&";
             $.ajax({  
-                url: '${ctx}/export_new/exportCktj.do',  
+                url: '${ctx}/export_new/exportCkmx.do',  
                 data: {  
                 	"data":data,"title":title,"count":count
                 },

@@ -7,6 +7,7 @@
 <title>营业结算</title>
 <script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
 <script type="text/javascript" src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>
 <style type="text/css">
 table,table tr,table tr td{
 	margin:0px;
@@ -15,10 +16,10 @@ table,table tr,table tr td{
 	border-collapse: collapse;
 }
 table{
-	width:100%;
-	margin-top:20px;
+	width:99%;
+	margin-top:10px;
 }
-table tr td{
+table tr td,th{
 	width:10%;
 	height:20px;
 	font-size:15px;
@@ -31,92 +32,101 @@ table tr td{
   font-weight:blod;
   background:url('${ctx }/img/11.png') repeat-x bottom;
 }
+.btn{
+  width:80px;
+  padding:5px;
+  border-radius:5px;
+  height:30px;
+  
+}
+.contentBox{
+height:78%;
+}
+
 </style>
 </head>
 <body>
-             <form action="${ctx}/query/query.do" method="get" id="ff">
-		      <span>
-		                   起始日期： <input type="text" id="dateb"name="dateb" value="${dateb }"onclick="WdatePicker({maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">至
-		                   终止日期： <input type="text" id="datee"name="datee" value="${datee }"onclick="WdatePicker({minDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
-		       </span>   
-               <span class="btr">
-               <button onclick="search();">查询</button>
-              <!--  <button onclick="exportXml();">导出</button>
-               <button>打印</button> -->
-               </span>
-           </form>
-         <table>
-             <tr>
-              <td class="c">栏目</td>
-              <td class="c">开户</td>
-              <td class="c">撤户</td>
-              <td class="c">挂失办卡</td>
-              <td class="c">现金存款</td>
-              <td class="c">圈存金额</td> 
-              <td class="c">补助存款</td>
-              <td class="c">取款</td>
-              <td class="c">营业</td>
-              <td class="c">总计</td>
-             </tr>
-            
-             <tr>
-               <td>账目变化</td> 
-               <td>0.00</td> 
-               <td>${chrsbh}</td> 
-               <td>${gsrsbh}</td> 
-               <td>${xjbh}</td> 
-               <td>${qcbh}</td> 
-               <td>${btbh}</td> 
-               <td>${qkbh}</td> 
-               <td>0.00</td> 
-               <td>${zbh}</td> 
-             </tr>
-             <tr>
-               <td>人数</td> 
-               <td>${khrs}</td> 
-               <td>${chrs}</td> 
-               <td>${gsrs}</td>
-               <td>${xjckrs}</td> 
-               <td>${qcrs}</td> 
-               <td>${btckrs}</td> 
-               <td>${qkrs}</td> 
-               <td>0.00</td> 
-               <td>${zrs}</td>  
-             </tr>
-          </table> 
+     <div class="container center">
+         <div class="searchBox center">
+	             <form action="${ctx}/query/query.do" method="get" id="ff" class="form-inline">
+				    <label class="control-label" > 起始日期：</label>
+				    <input type="text" id="dateb"name="dateb" value="${dateb }"onclick="WdatePicker({maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})"class="input-l">至
+				    <label class="control-label" > 终止日期：</label>
+				      <input type="text" id="datee"name="datee"  value="${datee }"onclick="WdatePicker({minDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})"class="input-l">
+				     &nbsp;&nbsp;&nbsp;&nbsp;
+	               <span class="btn-group">
+		               <button onclick="search();" class="btn btn-default"><i class="icon-search"></i>查询</button>
+		               <button onclick="exportXml();" class="btn btn-default"><i class=" icon-upload"></i>导出</button>
+		               <button onclick="doprint();" class="btn btn-default"><i class="icon-print"></i>打印</button>
+	               </span>
+			     
+	           </form>
+           </div>
+           <div class="contentBox center">
+	         <table>
+	             <tr>
+	              <th class="c">栏目</th>
+	              <th class="c">开户</th>
+	              <th class="c">撤户</th>
+	              <th class="c">挂失办卡</th>
+	              <th class="c">现金存款</th>
+	              <th class="c">圈存金额</th> 
+	              <th class="c">补助存款</th>
+	              <th class="c">取款</th>
+	              <th class="c">营业</th>
+	             </tr>
+	            
+	             <tr>
+	               <td>账目变化</td> 
+	               <td>0.00</td> 
+	               <td>${chrsbh}</td> 
+	               <td>${gsrsbh}</td> 
+	               <td>${xjbh}</td> 
+	               <td>${qcbh}</td> 
+	               <td>${btbh}</td> 
+	               <td>${qkbh}</td> 
+	               <td>${zyyje }</td> 
+	             </tr>
+	             <tr>
+	               <td>人数</td> 
+	               <td>${khrs}</td> 
+	               <td>${chrs}</td> 
+	               <td>${gsrs}</td>
+	               <td>${xjckrs}</td> 
+	               <td>${qcrs}</td> 
+	               <td>${btckrs}</td> 
+	               <td>${qkrs}</td> 
+	               <td>${zyyrs}</td> 
+	             </tr>
+	          </table> 
+          </div>
+          </div>
           <script type="text/javascript">
         var manager = null;
         var dailog = null;
-        
+        var date = new Date();
+	   	 var year = date.getFullYear();
+	   	 var month = date.getMonth() + 1;
+	   	 var strDate = date.getDate();
        
         
         function search(){
         	$("#ff").submit();
         }
         
-       /*  //导出excel
+         //导出excel
         function exportXml() {
         	var data="";
         	var title="";
         	var count="";
-            for (var i = 0, l = manager.rows.length; i < l; i++) {
-            	    var rybh=manager.rows[i].rybh;
-            	    var xm=manager.rows[i].xm;
-            	    var bm=manager.rows[i].bm;
-            	    var xfje=manager.rows[i].xfje;
-            	    var syje=manager.rows[i].syje;
-            	    var xfsj=manager.rows[i].xfsj;
-            	    var xfjh=manager.rows[i].xfjh;
-            	    
-                    data =data + rybh + "&"+xm+ "&"+bm+ "&"+xfje+ "&"+syje+ "&"+xfsj+ "&"+xfjh+"&";  
-            }  
-            title = "计次消费明细&人员编号&姓名&部门&消费金额&剩余金额&消费时间&消费机号&";
-            var zxfje = $("#zxfje").val();
-            //alert(zxfje);
-    	    if(zxfje==""){
-    	    	zxfje="0";
-    	    }
-            count = "消费总金额：&"+zxfje+"&";
+            
+            	   var tt = document.getElementsByTagName("td");
+            	   for(var i=0;i<tt.length;i++){
+            		   //alert(tt[i].innerHTML);
+            		   data =data+ tt[i].innerHTML+"&";
+            	   }
+          
+            title = "营业结算&栏目&开户&撤户&挂失办卡&现金存款&圈存&补助存款&取款&营业额&";
             $.ajax({  
                 url: '${ctx}/export/exportCktj.do',  
                 data: {  
@@ -126,7 +136,7 @@ table tr td{
                 dataType:"json",
                 success: function (data) {  
                 	if(data.success){
-                		alert(data.fileName);
+                		//alert(data.fileName);
                 		window.location.href="${ctx}/export/downloadFile.do";
                 	}else{
                 		alert("导出失败！");
@@ -136,7 +146,62 @@ table tr td{
                 	alert(message);  
                 }  
             });  
-        } */
+        } 
+         
+         
+      //打印
+        function doprint(){
+       	//CheckIsInstall();
+       	
+       	var LODOP = getLodop(); 
+       	var n = document.getElementsByTagName("td");
+       	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}body,table{width:90%;margin-left:40px;background-color:#ffffff;}.t{font-size:20px;font-weight:blod;}</style>"
+       	           +"<table><thead><tr><td width='100%' colspan='10'class='t'>营业结算<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
+       	           +"<td width='10%'class='t'>栏目</td>"
+       	           +"<td width='10%'class='t'>开户</td>"
+       	           +"<td width='10%'class='t'>撤户</td>"
+       	           +"<td width='10%'class='t'>挂失办卡</td>"
+       	           +"<td width='10%'class='t'>现金存款</td>"
+       	           +"<td width='10%'class='t'>圈存</td>"
+       	           +"<td width='10%'class='t'>补贴存款</td>"
+       	           +"<td width='10%'class='t'>取款</td>"
+       	           +"<td width='10%'class='t'>营业额</td>"
+       	           +"</tr></thead><tbody>";
+       	        
+       	           str =str +"<tr><td width='10%'>" +n[0].innerHTML 
+		                + "</td><td width='10%'>"+n[1].innerHTML 
+		                + "</td><td width='10%'>"+n[2].innerHTML  
+		                + "</td><td width='10%'>"+n[3].innerHTML  
+		                + "</td><td width='10%'>"+n[4].innerHTML 
+		                + "</td><td width='10%'>"+n[5].innerHTML 
+		                + "</td><td width='10%'>"+n[6].innerHTML 
+		                + "</td><td width='10%'>"+n[7].innerHTML
+		                + "</td><td width='10%'>"+n[8].innerHTML
+		             
+		                +"</td></tr>";
+		       	
+                str =str +"<tr><td width='10%'>" +n[9].innerHTML 
+                         + "</td><td width='10%'>"+n[10].innerHTML 
+                         + "</td><td width='10%'>"+n[11].innerHTML  
+                         + "</td><td width='10%'>"+n[12].innerHTML  
+                         + "</td><td width='10%'>"+n[13].innerHTML 
+                         + "</td><td width='10%'>"+n[14].innerHTML 
+                         + "</td><td width='10%'>"+n[15].innerHTML 
+                         + "</td><td width='10%'>"+n[16].innerHTML
+                         + "</td><td width='10%'>"+n[17].innerHTML
+                         +"</td></tr></tbody>";  
+       	 str=str+"<tfoot><tr><td width='100%' colspan='10' tindex='1'>"
+       	 +" 当前是第<font tdata='PageNO' format='0' color='black'>##</font>页</span>/共<font tdata='PageCount' format='0' color='black'>##</font></span>页，"
+       	 +"</td></tr></tfoot></table>";
+       	LODOP.PRINT_INIT("营业结算打印表格");
+       	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
+       	LODOP.ADD_PRINT_HTM(25,0,"100%","100%",str);
+       	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
+       	LODOP.NewPageA();
+       		LODOP.PREVIEW();		       
+       	
+       	
+       }
 </script>       
     
 </body>

@@ -75,6 +75,7 @@ public class QueryAction extends BaseAction {
     	String qcrs = "select count(a.bh) as qcrs,sum(a.ckje) as qcbh from dbo.view_dz_ckmx a left join dbo.xf_mx b on a.bh=b.user_serial "
                    +" where a.lx=1 and b.gly_no = 'CBC'";
     	String qkrs =  "select count(*) as qkrs,sum(qkje) as qkbh from view_dz_qkmx where 1=1 "; 
+    	String zyye = "select sum(zrs) as zyyrs,sum(summoney) as zyyje from view_dz_yysbs where 1=1";
     	if(StringUtils.isNotEmpty(dateb)){
     		khrs = khrs + " and khsj >= '"+dateb+"'";
     		chrs = chrs + " and chsj >= '"+dateb+"'";
@@ -83,6 +84,7 @@ public class QueryAction extends BaseAction {
     		btckrs = btckrs + " and ckrq >= '"+dateb+"'";
     		qkrs = qkrs + " and qksj >= '"+dateb+"'";
     		qcrs = qcrs + " and ckrq >= '"+dateb+"'";
+    		zyye = zyye + " and rq >= '"+dateb+"'";
     		
     	}else{
     		khrs = khrs + " and khsj >= '"+hehe +" 00:00:00'";
@@ -92,6 +94,7 @@ public class QueryAction extends BaseAction {
     		btckrs = btckrs + " and ckrq >= '"+hehe +" 00:00:00'";
     		qkrs = qkrs + " and qksj >= '"+hehe +" 00:00:00'";
     		qcrs = qcrs + " and ckrq >= '"+hehe +" 00:00:00'";
+    		zyye = zyye + " and rq >= '"+hehe +" 00:00:00'";
     		dateb = hehe+" 00:00:00";
     	}
     	if(StringUtils.isNotEmpty(datee)){
@@ -102,6 +105,7 @@ public class QueryAction extends BaseAction {
     		btckrs = btckrs + " and ckrq <= '"+datee+"'";
     		qkrs = qkrs + " and qksj <= '"+datee+"'";
     		qcrs = qcrs + " and ckrq <= '"+datee+"'";
+    		zyye = zyye + " and rq <= '"+datee+"'";
     		
     	}else{
     		khrs = khrs + " and khsj <= '"+hehe +" 23:59:59'";
@@ -111,6 +115,7 @@ public class QueryAction extends BaseAction {
     		btckrs = btckrs + " and ckrq <= '"+hehe +" 23:59:59'";
     		qkrs = qkrs + " and qksj <= '"+hehe +" 23:59:59'";
     		qcrs = qcrs + " and ckrq <= '"+hehe +" 23:59:59'";
+    		zyye = zyye + " and rq <= '"+hehe +" 23:59:59'";
     		datee = hehe+" 23:59:59";
     	}
     	
@@ -121,6 +126,7 @@ public class QueryAction extends BaseAction {
     	Sql sql4 = Sqls.create(btckrs);
     	Sql sql5 = Sqls.create(qkrs);
     	Sql sql6 = Sqls.create(qcrs);
+    	Sql sql7 = Sqls.create(zyye);
     	sql.setCallback(new SqlCallback() {
 			@Override
 			public Object invoke(Connection arg0, ResultSet arg1, Sql arg2)
@@ -212,6 +218,20 @@ public class QueryAction extends BaseAction {
 			}
 		});
     	
+    	sql7.setCallback(new SqlCallback() {
+			@Override
+			public Object invoke(Connection arg0, ResultSet arg1, Sql arg2)
+					throws SQLException {
+				List<String> list = new ArrayList<String>();
+				while(arg1.next()){
+					list.add(arg1.getString("zyyrs"));
+					list.add(arg1.getString("zyyje"));
+				}
+				return list;
+				
+			}
+		});
+    	
     	dao.execute(sql);
     	dao.execute(sql1);
     	dao.execute(sql2);
@@ -219,14 +239,16 @@ public class QueryAction extends BaseAction {
     	dao.execute(sql4);
     	dao.execute(sql5);
     	dao.execute(sql6);
+    	dao.execute(sql7);
     	
-    	String khrs1 = sql.getList(String.class).get(0);
-    	String chrs1 = sql1.getList(String.class).get(0);
-    	String gsrs1 = sql2.getList(String.class).get(0);
-    	String xjckrs1 = sql3.getList(String.class).get(0);
-    	String btckrs1 = sql4.getList(String.class).get(0);
-    	String qkrs1 = sql5.getList(String.class).get(0);
-    	String qcrs1 = sql6.getList(String.class).get(0);
+    	Integer khrs1 = Integer.parseInt(sql.getList(String.class).get(0));
+    	Integer chrs1 = Integer.parseInt(sql1.getList(String.class).get(0));
+    	Integer gsrs1 = Integer.parseInt(sql2.getList(String.class).get(0));
+    	Integer xjckrs1 = Integer.parseInt(sql3.getList(String.class).get(0));
+    	Integer btckrs1 = Integer.parseInt(sql4.getList(String.class).get(0));
+    	Integer qkrs1 = Integer.parseInt(sql5.getList(String.class).get(0));
+    	Integer qcrs1 = Integer.parseInt(sql6.getList(String.class).get(0));
+    	String zyye1 = sql7.getList(String.class).get(0);
     	
     	//String khrs2 = sql.getList(String.class).get(1);
     	String chrs2 = sql1.getList(String.class).get(1);
@@ -235,27 +257,34 @@ public class QueryAction extends BaseAction {
     	String btckrs2 = sql4.getList(String.class).get(1);
     	String qkrs2 = sql5.getList(String.class).get(1);
     	String qcrs2 = sql6.getList(String.class).get(1);
+    	String zyye2 = sql7.getList(String.class).get(1);
     	
-    	if(StringUtils.isNotEmpty(khrs1)){
-    		a = a+Integer.parseInt(khrs1);
+    	if(khrs1!=null){
+    		a = a+khrs1;
     	}
-    	if(StringUtils.isNotEmpty(chrs1)){
-    		a = a+Integer.parseInt(chrs1);
+    	if(chrs1!=null){
+    		a = a+chrs1;
     	}
-    	if(StringUtils.isNotEmpty(gsrs1)){
-    		a = a+Integer.parseInt(gsrs1);
+    	if(gsrs1!=null){
+    		a = a+gsrs1;
     	}
-    	if(StringUtils.isNotEmpty(xjckrs1)){
-    		a = a+Integer.parseInt(xjckrs1);
+    	if(xjckrs1!=null){
+    		a = a+xjckrs1;
     	}
-    	if(StringUtils.isNotEmpty(btckrs1)){
-    		a = a+Integer.parseInt(btckrs1);
+    	if(btckrs1!=null){
+    		a = a+btckrs1;
     	}
-    	if(StringUtils.isNotEmpty(qkrs1)){
-    		a = a+Integer.parseInt(qkrs1);
+    	if(qkrs1!=null){
+    		a = a+qkrs1;
     	}
-    	if(StringUtils.isNotEmpty(qcrs1)){
-    		a = a+Integer.parseInt(qcrs1);
+    	if(qcrs1!=null){
+    		a = a+qcrs1;
+    	}
+    	
+    	if(StringUtils.isNotEmpty(zyye1)&&!"".equals(zyye1)){
+    		a= a+Integer.parseInt(zyye1);
+    	}else{
+    		zyye1="0";
     	}
     	
     	/*if(!"".equals(khrs2)){
@@ -264,60 +293,67 @@ public class QueryAction extends BaseAction {
     	if(StringUtils.isNotEmpty(chrs2)&&!"".equals(chrs2)){
     		b = b+Double.parseDouble(chrs2);
     	}else{
-    		chrs2 = "0:00";
+    		chrs2 = "0.0";
     	}
     	if(StringUtils.isNotEmpty(gsrs2)&&!"".equals(gsrs2)){
     		b = b+Double.parseDouble(gsrs2);
     	}else{
-    		gsrs2 = "0:00";  
+    		gsrs2 = "0.0";  
     		}
     	if(StringUtils.isNotEmpty(xjckrs2)&&!"".equals(xjckrs2)){
     		b = b+Double.parseDouble(xjckrs2);
     	}else{
-    		xjckrs2 = "0:00";
+    		xjckrs2 = "0.0";
     	}
     	if(StringUtils.isNotEmpty(btckrs2)&&!"".equals(btckrs2)){
     		b = b+Double.parseDouble(btckrs2);
     	}else{
-    		btckrs2 = "0:00";
+    		btckrs2 = "0.0";
     	}
     	if(StringUtils.isNotEmpty(qkrs2)&&!"".equals(qkrs2)){
     		b = b+Double.parseDouble(qkrs2);
     	}else{
-    		qkrs2 = "0:00";
+    		qkrs2 = "0.0";
     	}
     	if(StringUtils.isNotEmpty(qcrs2)&&!"".equals(qcrs2)){
     		b = b+Double.parseDouble(qcrs2);
     	}else{
-    		qcrs2 = "0:00";
+    		qcrs2 = "0.0";
+    	}
+    	if(StringUtils.isNotEmpty(zyye2)&&!"".equals(zyye2)){
+    		b = b+Double.parseDouble(zyye2)/100;
+    	}else{
+    		zyye2 = "0.0";
     	}
     	
     	req.setAttribute("khrs", khrs1);
     	
     	req.setAttribute("chrs", chrs1);
-    	req.setAttribute("chrsbh", chrs2);
+    	req.setAttribute("chrsbh", Double.parseDouble(chrs2));
     	
     	req.setAttribute("gsrs", gsrs1);
-    	req.setAttribute("gsrsbh", gsrs2);
+    	req.setAttribute("gsrsbh", Double.parseDouble(gsrs2));
     	
     	req.setAttribute("xjckrs", xjckrs1);
-    	req.setAttribute("xjbh", xjckrs2);
+    	req.setAttribute("xjbh", Double.parseDouble(xjckrs2));
     	
     	req.setAttribute("btckrs", btckrs1);
-    	req.setAttribute("btbh", btckrs2);
+    	req.setAttribute("btbh", Double.parseDouble(btckrs2));
     	
     	req.setAttribute("qkrs", qkrs1);
-    	req.setAttribute("qkbh", qkrs2);
+    	req.setAttribute("qkbh", Double.parseDouble(qkrs2));
+    	
+    	req.setAttribute("zyyrs", zyye1);
+    	req.setAttribute("zyyje", Double.parseDouble(zyye2)/100);
     	
     	req.setAttribute("qcrs", qcrs1);
-    	req.setAttribute("qcbh", qcrs2);
+    	req.setAttribute("qcbh", Double.parseDouble(qcrs2));
     	BigDecimal   a1   =   new   BigDecimal(b);  
     	req.setAttribute("zrs", a );
     	req.setAttribute("zbh", a1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue());
     	
     	req.setAttribute("dateb", dateb);
     	req.setAttribute("datee", datee);
-    	
     	
     	
     	
@@ -405,7 +441,8 @@ public class QueryAction extends BaseAction {
         str=str+"group by lx,czy";
         
         Sql sql=Sqls.create(str);
-        sql.setCallback(new QueryRecordCallback());
+        sql.setEntity(dao.getEntity(Cktj.class));
+        sql.setCallback(Sqls.callback.entities());
 
         dao.execute(sql);
         List<Cktj> list = sql.getList(Cktj.class);
