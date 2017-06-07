@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.impl.NutDao;
 import org.nutz.dao.sql.Sql;
@@ -31,7 +32,7 @@ import org.nutz.mvc.annotation.Ok;
 public class TimerAction extends HttpServlet{
 	
 	public String xjckrs1 = "0.0";
-	public String btckrs1 = "0.0";
+	public String ryye1 = "0.0";
 	public String qcrs1 = "0.0";
 
 	/**
@@ -51,11 +52,11 @@ public class TimerAction extends HttpServlet{
 			HttpServletResponse response) throws Exception{
 		String xjckrs = "select count(a.bh) as xjckrs,sum(a.ckje) as xjbh from dbo.view_dz_ckmx a left join dbo.xf_mx b on a.bh=b.user_serial "
 				+ "where a.lx=1 and b.gly_no != 'CBC' and ckrq >= '"+hehe+" 00:00:00' and ckrq <= '"+hehe+" 23:59:59'";
-		String btckrs = "select count(*) as btckrs,sum(ckje) as btbh from view_dz_ckmx where lx=2 and ckrq >= '"+hehe+" 00:00:00' and ckrq <= '"+hehe+" 23:59:59'";
+		String ryye = "select count(rq) as n, sum(new_money/100) as ryye from view_dz_yysb where  rq >= '"+hehe+" 00:00:00' and rq <= '"+hehe+" 23:59:59' ";
 		String qcrs = "select count(a.bh) as qcrs,sum(a.ckje) as qcbh from dbo.view_dz_ckmx a left join dbo.xf_mx b on a.bh=b.user_serial "
 				+ " where a.lx=1 and b.gly_no = 'CBC' and ckrq >= '"+hehe+" 00:00:00' and ckrq <= '"+hehe+" 23:59:59'";
 		Sql sql = Sqls.create(xjckrs);
-		Sql sql1 = Sqls.create(btckrs);
+		Sql sql1 = Sqls.create(ryye);
 		Sql sql2 = Sqls.create(qcrs);
 
 		sql.setCallback(new SqlCallback() {
@@ -76,7 +77,11 @@ public class TimerAction extends HttpServlet{
 					throws SQLException {
 				List<String> list = new ArrayList<String>();
 				while (arg1.next()) {
-					list.add(arg1.getString("btbh"));
+					if(StringUtils.isNotEmpty(arg1.getString("ryye"))&&!"".equals(arg1.getString("ryye"))){
+						list.add("0.0");
+					}else{
+					list.add(arg1.getString("ryye"));
+					}
 				}
 				return list;
 
@@ -101,14 +106,14 @@ public class TimerAction extends HttpServlet{
 
 		
 		 xjckrs1 = sql.getList(String.class).get(0);
-		 btckrs1 = sql1.getList(String.class).get(0);
+		 ryye1 = sql1.getList(String.class).get(0);
 		 qcrs1 = sql2.getList(String.class).get(0);
 
 		HttpSession session = request.getSession(true);
 		session.removeAttribute("xjbh");
 		session.setAttribute("xjbh", xjckrs1);
-		session.removeAttribute("btbh");
-		session.setAttribute("btbh", btckrs1);
+		session.removeAttribute("ryye");
+		session.setAttribute("ryye", ryye1);
 		session.removeAttribute("qcbh");
 		session.setAttribute("qcbh", qcrs1);
 	}

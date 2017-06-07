@@ -98,17 +98,17 @@ var tab = null;
 		
 		
 		var xjck = "<%= session.getAttribute("xjbh")%>";
-		var bzck = "<%= session.getAttribute("btbh")%>";
+		var ryye = "<%= session.getAttribute("ryye")%>";
 		var qcje = "<%= session.getAttribute("qcbh")%>";
 		if(xjck!="null"){
 			$("#xjck").val(xjck);
 		}else{
 			$("#xjck").val("0.0");
 		}
-		if(bzck!="null"){
-			$("#bzck").val(bzck);
+		if(ryye!="null"){
+			$("#ryye").val(ryye);
 		}else{
-			$("#bzck").val("0.0");
+			$("#ryye").val("0.0");
 		}
 		
 		if(qcje!="null"){
@@ -144,17 +144,17 @@ var tab = null;
 			dataType:"json",
 			success:function(){
 				var xjck = "<%= session.getAttribute("xjbh")%>";
-				var bzck = "<%= session.getAttribute("btbh")%>";
+				var ryye = "<%= session.getAttribute("ryye")%>";
 				var qcje = "<%= session.getAttribute("qcbh")%>";
 				if(xjck!="null"){
 					$("#xjck").val(xjck);
 				}else{
 					$("#xjck").val("0.0");
 				}
-				if(bzck!="null"){
-					$("#bzck").val(bzck);
+				if(ryye!="null"){
+					$("#ryye").val(ryye);
 				}else{
-					$("#bzck").val("0.0");
+					$("#ryye").val("0.0");
 				}
 				
 				if(qcje!="null"){
@@ -305,7 +305,7 @@ body {
 		<div class="l-topmenu-dsq">
 		     现金存款<input type="text"id="xjck"value="" disabled="disabled"/>
 		    圈存金额<input type="text"id="qcje" value=""disabled="disabled"/>
-		    补助存款<input type="text"id="bzck"value=""disabled="disabled"/></div>
+		    日营业额<input type="text"id="ryye"value=""disabled="disabled"/></div>
 		<div class="l-topmenu-welcome">
 			<span class="space">欢迎，<span id="role"></span>&nbsp;&nbsp;|
 			
@@ -328,6 +328,6 @@ body {
 		</div>
 
 	</div>
-	<div style="height: 25px; line-height: 20px; text-align: center;margin-top:5px;">南通腾源智能科技有限公司</div>
+	<div style="height: 25px; line-height: 20px; text-align: center;margin-top:5px;">南通腾源智能科技有限公司@1.1</div>
 </body>
 </html>

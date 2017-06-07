@@ -10,20 +10,31 @@
 <script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>
 </head>
 <body>
-   <span>
-                   起始日期： <input type="text" id="dateb" onclick="WdatePicker({startDate: '%y-%M-01 00:00:00' ,maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">至
-                   终止日期： <input type="text" id="datee" onclick="WdatePicker({startDate: '%y-%M-%d 23:59:59' ,maxDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
-                  人员编号：<input type="text" id="bh"style="width:100px;"/>
-                   姓名：<input type="text" id="xm"style="width:100px;"/>
-     </span>
-               <span class="btr">
-               <button onclick="search();">查询</button>
-               <button onclick="exportXml();">导出</button>
-               <button onclick="doprint();">打印</button>
+   <div class="container center">
+      <div class="searchBox center">
+         <div class="form-inline">
+                 <label class="control-label" > 起始日期：</label>
+                 <input type="text" id="dateb" onclick="WdatePicker({startDate: '%y-%M-01 00:00:00' ,maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">至
+                   <label class="control-label" > 终止日期：</label>
+                   <input type="text" id="datee" onclick="WdatePicker({startDate: '%y-%M-%d 23:59:59' ,maxDate:'#F{$dp.$D(\'dateb\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                <label class="control-label" > 人员编号：</label>
+                <input type="text" id="bh"/>
+        </div> 
+        <div class="form-inline" style="margin-top:10px;">      
+                  <label class="control-label" > 人员姓名：</label>
+                  <input type="text" id="xm"/>&nbsp;&nbsp;&nbsp;&nbsp;
+               <span class="btn-group">
+               <button onclick="search();" class="btn btn-default"><i class="icon-search"></i>查询</button>
+	           <button onclick="exportXml();" class="btn btn-default"><i class="icon-upload"></i>导出</button>
+	           <button onclick="doprint();" class="btn btn-default"><i class="icon-print"></i>打印</button>
                </span>
-             <span style="margin-left:40px;">纠错人数：</span><input type="text" id="zjcrs"style="width:80px;height:25px;"disabled="disabled"/>
+               </div>   
+         </div>
+         <div class="contentBox center">   
+             <span style="margin-left:10px;">纠错人数：</span><input type="text" id="zjcrs"style="height:25px;"disabled="disabled"/>
            <div style="PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px" id="tt"></div>
- 
+          </div>   
+   </div>
  <script type="text/javascript">
         var manager = null;
         var dailog = null;
@@ -138,17 +149,27 @@
         	var data="";
         	var title="";
         	var count="";
-            for (var i = 0, l = manager.rows.length; i < l; i++) {
-            	    var rybh=manager.rows[i].rybh;
-            	    var xm=manager.rows[i].xm;
-            	    var bm=manager.rows[i].bm;
-            	    var bh=manager.rows[i].bh;
-            	    var jcje=manager.rows[i].jcje;
-            	    var ysje=manager.rows[i].ysje;
-            	    var jcsj=manager.rows[i].jcsj;
-            	    var kh=manager.rows[i].kh;
-                    data =data + rybh + "&"+xm+"&"+bm+"&"+bh+"&"+jcje+"&"+ysje+"&"+jcsj+"&"+kh+"&";  
-            }  
+        	var bh = $("#bh").val();
+        	var xm = $("#xm").val();
+        	var dateb = $("#dateb").val();
+        	var datee = $("#datee").val();
+        	if(bh!=""){
+        		data =data+"rybh:"+bh+"&";
+        	}
+        	if(xm!=""){
+        		data =data+"xm:"+xm+"&";
+        	}
+        	if(dateb!=""){
+        		data =data+"dateb:"+dateb+"&";
+        	}
+        	if(datee!=""){
+        		data =data+"datee:"+datee+"&";
+        	}
+        	
+        	
+        	
+            
+
             title = "纠错人员报表&人员编号&姓名&部门&变化金额&纠错金额&原始金额&纠错日期&卡号&";
             var zjcrs = $("#zjcrs").val();
     	    if(zjcrs==""){
@@ -156,7 +177,7 @@
     	    }
             count = "纠错总人数：&"+zjcrs+"&";
             $.ajax({  
-                url: '${ctx}/export/exportCktj.do',  
+                url: '${ctx}/export_new/exportCkmx.do',  
                 data: {  
                 	"data":data,"title":title,"count":count
                 },
@@ -165,7 +186,7 @@
                 success: function (data) {  
                 	if(data.success){
                 		//alert(data.fileName);
-                		window.location.href="${ctx}/export/downloadFile.do";
+                		window.location.href="${ctx}/export_new/downloadFile.do";
                 	}else{
                 		alert("导出失败！");
                 	}
@@ -174,17 +195,19 @@
                 	alert(message);  
                 }  
             });  
-        }
+        } 
         
         //打印
         function doprint(){
-       	//CheckIsInstall();
-       	//alert(content);
-       	var LODOP = getLodop(); 
-       	var n = manager.rows.length;
-       	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}table{width:100%;}.t{font-size:20px;font-weight:blod;}</style>"
-       	           +""
-       	           +"<table><thead><tr><td width='100%' colspan='8'class='t'>纠错人员报表<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
+       	CheckIsInstall();
+       	var bh = $("#bh").val();
+        var xm = $("#xm").val();
+        var dateb = $("#dateb").val();
+        var datee = $("#datee").val();
+       	var str = "<style>table,tr,td{font-size:15px;border:1px solid black;text-align:center;border-collapse:collapse;cellspacing='0' ;cellpadding='0';}body,table{width:90%;margin-left:40px;background-color:#ffffff;}.t{font-size:20px;font-weight:blod;}</style>"
+       	           +"<table><thead><tr><td width='100%' colspan='8'class='t'>纠错人员报表"
+       	           +"<span style='float:left;font-size:15px;margin-left:10px;'>总纠错人数："+$("#zjcrs").val()+"</span>"
+       	           +"<span style='float:right;font-size:15px;margin-right:10px;'>时间："+year+"年"+month+"月"+strDate+"日"+"&nbsp;&nbsp;操作员："+"<%=session.getAttribute("username")%>"+"</span></td></tr><tr>"
        	           +"<td width='12.5%'class='t'>人员编号</td>"
        	           +"<td width='12.5%'class='t'>姓名</td>"
        	           +"<td width='12.5%'class='t'>部门</td>"
@@ -193,38 +216,51 @@
        	           +"<td width='12.5%'class='t'>原始金额</td>"
        	           +"<td width='12.5%'class='t'>纠错时间</td>"
        	           +"<td width='12.5%'class='t'>卡号</td></tr></thead><tbody>";
-       	
-       	  for (var i = 0, l = n; i < l; i++) {
-       		  //alert("123");
-        	   var rybh=manager.rows[i].rybh;
-            	    var xm=manager.rows[i].xm;
-            	    var bm=manager.rows[i].bm;
-            	    var bh=manager.rows[i].bh;
-            	    var jcje=manager.rows[i].jcje;
-            	    var ysje=manager.rows[i].ysje;
-            	    var jcsj=manager.rows[i].jcsj;
-            	    var kh=manager.rows[i].kh;
-        	    
-                str =str +"<tr><td width='12.5%'>" +rybh 
-                         + "</td><td width='12.5%'>"+xm 
-                         + "</td><td width='12.5%'>"+bm 
-                         + "</td><td width='12.5%'>"+bh
-                         + "</td><td width='12.5%'>"+jcje 
-                         + "</td><td width='12.5%'>"+ysje 
-                         + "</td><td width='12.5%'>"+jcsj 
-                         + "</td><td width='12.5%'>"+kh 
-                         +"</td></tr></tbody>";  
-        }  
-       	 str=str+"<tfoot><tr><td width='100%' colspan='8' tindex='1'>"
-       	 +" 当前是第<font tdata='PageNO' format='ChineseNum' color='blue'>##</font>页</span>/共<font tdata='PageCount' format='ChineseNum' color='blue'>##</font></span>页，"
-       	 +"</td></tr></tfoot></table>";
-       	LODOP.PRINT_INIT("纠错人员报表打印表格");
-       	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
-       	LODOP.ADD_PRINT_HTM(10,0,"100%","100%",str);
-       	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
-       	LODOP.NewPageA();
-       		LODOP.PREVIEW();		       
-       	
+       	        $.ajax({  
+                    url: '${ctx}/query_print/queryJcrybbJson.do',  
+                    data: {  
+                    	"rybh":bh,"xm":xm,"dateb":dateb,"datee":datee
+                    },
+                    type:"post",
+                    dataType:"json",
+                    success: function (data) {  
+                    	var LODOP = getLodop();
+                    	for (var i = 0; i < data.length; i++) {
+                      	   var rybh=data[i].rybh;
+                          	    var xm=data[i].xm;
+                          	    var bm=data[i].bm;
+                          	    var bh=data[i].bh;
+                          	    var jcje=data[i].jcje;
+                          	    var ysje=data[i].ysje;
+                          	    var jcsj=data[i].jcsj;
+                          	    var kh=data[i].kh;
+                      	    
+                              str =str +"<tr><td width='12.5%'>" +rybh 
+                                       + "</td><td width='12.5%'>"+xm 
+                                       + "</td><td width='12.5%'>"+bm 
+                                       + "</td><td width='12.5%'>"+bh
+                                       + "</td><td width='12.5%'>"+jcje 
+                                       + "</td><td width='12.5%'>"+ysje 
+                                       + "</td><td width='12.5%'>"+jcsj 
+                                       + "</td><td width='12.5%'>"+kh 
+                                       +"</td></tr>";  
+                      }  
+                     	 str=str+"</tbody><tfoot><tr><td width='100%' colspan='8' tindex='1'>"
+                     	 +" 当前是第<font tdata='PageNO' format='0' color='black'>##</font>页</span>/共<font tdata='PageCount' format='0' color='black'>##</font></span>页，"
+                     	 +"</td></tr></tfoot></table>";
+                     	LODOP.PRINT_INIT("纠错人员报表打印表格");
+                     	LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4") ;
+                     	LODOP.ADD_PRINT_HTM(25,0,"100%","100%",str);
+                     	LODOP.SET_PRINT_STYLEA(0,"Vorient",3);
+                     	LODOP.NewPageA();
+                     		LODOP.PREVIEW();		       
+                     	
+                    },  
+                    error: function (message) {  
+                    	alert(message);  
+                    }  
+                });  
+       	  
        	
        }
 </script>

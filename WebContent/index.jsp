@@ -9,7 +9,9 @@
 <script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
 <script type="text/javascript" src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
 <title>${appname }</title>
+<style type="text/css">
 
+</style>
 </head>
 <body>
 
@@ -23,17 +25,17 @@
 			</tr>
 			<tr>
 				<td class="Lable" width="25%">密码：</td>
-				<td><input type="password" name="user_passwd" class="required"> </td>
+				<td><input type="password" name="user_passwd"class="required"> </td>
 			</tr>
 			<tr>
-			    <td class="Lable" width="25%">验证码：</td>
+			    <td class="Lable" width="25%">验证：</td>
 			    <td>
 				<img src="${ctx}/PictureCheckCodeServlet" /> <input type="text"name="yzm"style="width:50%;" placeholder="不区分大小写"id="yzm"value="" />
 	            <a href="" onclick="myReload()"> 换一个</a> 
 	            </td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><input type="submit" value="提交" class="buttonbg01"></td>
+				<td colspan="2" align="center"><input type="submit" value="提交" style="width:30%;"class="btn"></td>
 			</tr>
 		</table>
 

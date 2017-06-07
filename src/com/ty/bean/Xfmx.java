@@ -84,11 +84,11 @@ public class Xfmx {
 		this.xfsj = xfsj;
 	}
 
-	public String getXfjd() {
+	public String getXfjh() {
 		return xfjh;
 	}
 
-	public void setXfjd(String xfjh) {
+	public void setXfjh(String xfjh) {
 		this.xfjh = xfjh;
 	}
 

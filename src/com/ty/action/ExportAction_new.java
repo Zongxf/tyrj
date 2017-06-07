@@ -4,6 +4,7 @@ package com.ty.action;
  * 
  */
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,16 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 
+import com.ty.bean.Chrybb;
 import com.ty.bean.Ckmx;
+import com.ty.bean.Cktj;
+import com.ty.bean.Gsbkrybb;
+import com.ty.bean.Jcrybb;
+import com.ty.bean.Jcxfmx;
+import com.ty.bean.Khrybb;
+import com.ty.bean.Qkmx;
+import com.ty.bean.Xfmx;
+import com.ty.bean.Xzyytj;
 import com.ty.dy.Download;
 import com.ty.dy.ExportExcel;
 import com.ty.framework.action.BaseAction;
@@ -47,7 +57,17 @@ public class ExportAction_new extends BaseAction{
         QueryExcelAction queryExcelAction;
         
     	public String fileName ="";
-
+    	public List<Ckmx> list1=new ArrayList<Ckmx>();
+    	public List<Qkmx> list2=new ArrayList<Qkmx>();
+    	public List<Xfmx> list3=new ArrayList<Xfmx>();
+    	public List<Jcxfmx> list4=new ArrayList<Jcxfmx>();
+    	public List<Cktj> list5=new ArrayList<Cktj>();
+    	public List<Xzyytj> list6=new ArrayList<Xzyytj>();
+    	public List<Khrybb> list7=new ArrayList<Khrybb>();
+    	public List<Chrybb> list8=new ArrayList<Chrybb>();
+    	public List<Gsbkrybb> list9=new ArrayList<Gsbkrybb>();
+    	public List<Jcrybb> list10=new ArrayList<Jcrybb>();
+        public String [][] aa=new String[2][2];
 	    public ExportAction_new() {
 	        resMap = new HashMap<String, Object>();
 
@@ -56,7 +76,7 @@ public class ExportAction_new extends BaseAction{
 	    @At()
 		@Ok("json")
 		@Filters
-		public Map<String, Object> exportCktj(String data,String title, String count,HttpServletRequest req) throws Exception
+		public Map<String, Object> exportCkmx(String data,String title, String count,HttpServletRequest req) throws Exception
 		{   
 	    	//初始化列表
 	        HSSFWorkbook wb = new HSSFWorkbook();  
@@ -82,26 +102,201 @@ public class ExportAction_new extends BaseAction{
              String [] tt;
              tt = title.split("&");
              
-             
-             List<Ckmx> list = queryExcelAction.queryCkmxJson(map);
-             String [][] aa = new String[list.size()][tt.length];
-             for(int i = 0;i<list.size();i++){
-            	 String t = list.get(i).getBh();
-            	 String b = list.get(i).getBm();
-            	 String x = list.get(i).getXm();
-            	 String c = list.get(i).getCkje();
-            	 String s = list.get(i).getSyje();
-            	 String ck = list.get(i).getCkrq();
-            	 String lx = list.get(i).getLx();
-            		 aa[i][0] = t;
-            		 aa[i][1] = x;
-            		 aa[i][2] = b;
-            		 aa[i][3] = c;
-            		 aa[i][4] = s;
-            		 aa[i][5] = ck;
-            		 aa[i][6] = lx;
-            	
+             if(tt[0].equals("存款明细")){
+            	 list1 = queryExcelAction.queryCkmxJson(map);
+                 aa = new String[list1.size()][tt.length];
+                 for(int i = 0;i<list1.size();i++){
+                	 String t = list1.get(i).getBh();
+                	 String b = list1.get(i).getBm();
+                	 String x = list1.get(i).getXm();
+                	 String c = list1.get(i).getCkje();
+                	 String s = list1.get(i).getSyje();
+                	 String ck = list1.get(i).getCkrq();
+                	 String lx = list1.get(i).getLx();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = s;
+                		 aa[i][5] = ck;
+                		 if(lx.equals("1")){
+                    		 lx="现金存款";
+                    	 }else if(lx.equals("2")){
+                    		 lx="补助存款";
+                    	 }
+                		 aa[i][6] = lx;
+                 }
+             }else if(tt[0].equals("取款明细")){
+            	 list2 = queryExcelAction.queryQkmxJson(map);
+                 aa = new String[list2.size()][tt.length];
+                 for(int i = 0;i<list2.size();i++){
+                	 String t = list2.get(i).getBh();
+                	 String b = list2.get(i).getBm();
+                	 String x = list2.get(i).getXm();
+                	 String c = list2.get(i).getQkje();
+                	 String s = list2.get(i).getSyje();
+                	 String ck = list2.get(i).getQksj();
+                	 String qxj = list2.get(i).getQxj();
+                	 String qbt = list2.get(i).getQbt();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = qxj;
+                		 aa[i][5] = qbt;
+                		 aa[i][6] = s;
+                		 aa[i][7] = ck;
+                 }
+             }else if(tt[0].equals("消费明细")){
+            	 list3 = queryExcelAction.queryXfmxJson(map);
+                 aa = new String[list3.size()][tt.length];
+                 for(int i = 0;i<list3.size();i++){
+                	 String t = list3.get(i).getRybh();
+                	 String b = list3.get(i).getBm();
+                	 String x = list3.get(i).getXm();
+                	 String c = list3.get(i).getXfje();
+                	 String s = list3.get(i).getSyje();
+                	 String ck = list3.get(i).getXfsj();
+                	 String qxj = list3.get(i).getXfjh();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = s;
+                		 aa[i][5] = ck;
+                		 aa[i][6] = qxj;
+                 }
+             }else if(tt[0].equals("计次消费明细")){
+            	 list4 = queryExcelAction.queryXfjcmxJson(map);
+                 aa = new String[list4.size()][tt.length];
+                 for(int i = 0;i<list4.size();i++){
+                	 String t = list4.get(i).getRybh();
+                	 String b = list4.get(i).getBm();
+                	 String x = list4.get(i).getXm();
+                	 String c = list4.get(i).getCs();
+                	 String ck = list4.get(i).getXfsj();
+                	 String qxj = list4.get(i).getXfjh();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][5] = ck;
+                		 aa[i][6] = qxj;
+                 }
+             }else if(tt[0].equals("存款统计")){
+            	 list5 = queryExcelAction.queryCktjJson(map);
+                 aa = new String[list5.size()][tt.length];
+                 for(int i = 0;i<list5.size();i++){
+                	 String t = list5.get(i).getLx();
+                	 if(t.equals("1")){
+                		 t="现金存款";
+                	 }else if(t.equals("2")){
+                		 t="补助存款";
+                	 }
+                	 String b = list5.get(i).getCkje();
+                	 String x = list5.get(i).getCzy();
+                		 aa[i][0] = t;
+                		 aa[i][1] = b;
+                		 aa[i][2] = x;
+                 }
+             }else if(tt[0].equals("小组营业统计")){
+            	 list6 = queryExcelAction.queryXzyytjJson(map);
+                 aa = new String[list6.size()][tt.length];
+                 for(int i = 0;i<list6.size();i++){
+                	 String t = list6.get(i).getDep_name();
+                	 String b = list6.get(i).getLname();
+                	 String x = list6.get(i).getSummoney();
+                	 String xx = list6.get(i).getZrs();
+                		 aa[i][0] = t;
+                		 aa[i][1] = b;
+                		 aa[i][2] = x;
+                		 aa[i][3] = xx;
+                 }
+             }else if(tt[0].equals("开户人员报表")){
+            	 list7 = queryExcelAction.queryKhrybbJson(map);
+                 aa = new String[list7.size()][tt.length];
+                 for(int i = 0;i<list7.size();i++){
+                	 String t = list7.get(i).getRybh();
+                	 String b = list7.get(i).getBm();
+                	 String x = list7.get(i).getXm();
+                	 String c = list7.get(i).getLx();
+                	 if(c.equals("0")){
+                		 c="普通员工（默认）";
+                	 }
+                	 String ck = list7.get(i).getKhsj();
+                	 String qxj = list7.get(i).getKh();
+                	 String czy = list7.get(i).getCzy();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = ck;
+                		 aa[i][5] = qxj;
+                		 aa[i][6] = czy;
+                 }
+             }else if(tt[0].equals("撤户人员报表")){
+            	 list8 = queryExcelAction.queryChrybbJson(map);
+                 aa = new String[list8.size()][tt.length];
+                 for(int i = 0;i<list8.size();i++){
+                	 String t = list8.get(i).getRybh();
+                	 String b = list8.get(i).getBm();
+                	 String x = list8.get(i).getXm();
+                	 String c = list8.get(i).getTxj();
+                	 String ck = list8.get(i).getTbt();
+                	 String qxj = list8.get(i).getChsj();
+                	 String czy = list8.get(i).getCzy();
+                	 String cIP = list8.get(i).getIp();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = ck;
+                		 aa[i][5] = qxj;
+                		 aa[i][6] = czy;
+                		 aa[i][7] = cIP;
+                 }
+             }else if(tt[0].equals("挂失办卡人员报表")){
+            	 list9 = queryExcelAction.queryGsbkrybbJson(map);
+                 aa = new String[list9.size()][tt.length];
+                 for(int i = 0;i<list9.size();i++){
+                	 String t = list9.get(i).getRybh();
+                	 String b = list9.get(i).getBm();
+                	 String x = list9.get(i).getXm();
+                	 String c = list9.get(i).getBksj();
+                	 String ck = list9.get(i).getSyje();
+                	 String qxj = list9.get(i).getKh();
+                	
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = ck;
+                		 aa[i][5] = qxj;
+                 }
+             }else if(tt[0].equals("纠错人员报表")){
+            	 list10 = queryExcelAction.queryJcrybbJson(map);
+                 aa = new String[list10.size()][tt.length];
+                 for(int i = 0;i<list10.size();i++){
+                	 String t = list10.get(i).getRybh();
+                	 String b = list10.get(i).getBm();
+                	 String x = list10.get(i).getXm();
+                	 String c = list10.get(i).getBh();
+                	 String ck = list10.get(i).getJcje();
+                	 String qxj = list10.get(i).getYsje();
+                	 String czy = list10.get(i).getKh();
+                	 String cIP = list10.get(i).getJcsj();
+                		 aa[i][0] = t;
+                		 aa[i][1] = x;
+                		 aa[i][2] = b;
+                		 aa[i][3] = c;
+                		 aa[i][4] = ck;
+                		 aa[i][5] = qxj;
+                		 aa[i][6] = czy;
+                		 aa[i][7] = cIP;
+                 }
              }
+             
+             
              //统计
              String [] tj;
              tj = count.split("&");
@@ -181,23 +376,109 @@ public class ExportAction_new extends BaseAction{
 		         //创建内容行
 		         HSSFCell rowCell = null;
 	        	 HSSFRow row=null;
-	        	 
-	        	if(!"".equals(aa[0][0])){
-	        		 for(int i=0;i<list.size();i++){
-	        			 row = sheet.createRow(i+1);
+	        	 if(aa.length>0){
+	        		if(list1.size()>0){
+	        		 for(int i=0;i<list1.size();i++){
+	        			 row = sheet.createRow(i+1); 
 			        	 for(int j=0;j<tt.length;j++){
 			        		 rowCell = row.createCell(j);  
 			                 rowCell.setCellStyle(cellStyle);  
 			                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
 			        	 }
 			        	 
-			        	  
-			        
-			        	 
-			        	 
 			         }
+	        		}else if(list2.size()>0){
+		        		 for(int i=0;i<list2.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list3.size()>0){
+		        		 for(int i=0;i<list3.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list4.size()>0){
+		        		 for(int i=0;i<list4.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list5.size()>0){
+		        		 for(int i=0;i<list5.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list6.size()>0){
+		        		 for(int i=0;i<list6.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list7.size()>0){
+		        		 for(int i=0;i<list7.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list8.size()>0){
+		        		 for(int i=0;i<list8.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list9.size()>0){
+		        		 for(int i=0;i<list9.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}else if(list10.size()>0){
+		        		 for(int i=0;i<list10.size();i++){
+		        			 row = sheet.createRow(i+1);
+				        	 for(int j=0;j<tt.length;j++){
+				        		 rowCell = row.createCell(j);  
+				                 rowCell.setCellStyle(cellStyle);  
+				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
+				        	 }
+				        	 
+				         }
+		        		}
 	        	 }
-		         
 		         
 		         exportExcel.outputExcel(path+fileName);  
 					resMap.put("success", true);

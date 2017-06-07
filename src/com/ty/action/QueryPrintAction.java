@@ -17,6 +17,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
+import org.nutz.mvc.annotation.Ok;
 
 import com.ty.bean.Chrybb;
 import com.ty.bean.Ckmx;
@@ -30,11 +31,11 @@ import com.ty.bean.Xfmx;
 import com.ty.bean.Xzyytj;
 import com.ty.framework.action.BaseAction;
 
-@At("/query_new")
+@At("/query_print")
 @InjectName()
 @IocBean
 @Filters
-public class QueryExcelAction extends BaseAction {
+public class QueryPrintAction extends BaseAction {
 
     @Inject
     private NutDao dao;
@@ -46,21 +47,22 @@ public class QueryExcelAction extends BaseAction {
 
     //存款统计Json
     @At()
-    public List<Cktj> queryCktjJson(Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Cktj> queryCktjJson(String lx,String czy,String dateb,String datee) throws Exception {
     	 String str="select lx,sum(je) as ckje, czy from  view_dz_cktj where 1=1";
-         if (map.containsKey("lx") & StringUtils.isNotEmpty(map.get("lx"))) {
-         	str=str+" and lx = "+map.get("lx");
+         if (StringUtils.isNotEmpty(lx)&&!"".equals(lx)) {
+         	str=str+" and lx = "+lx;
          }
-         if (map.containsKey("czy") & StringUtils.isNotEmpty(map.get("czy"))) {
-         	str=str+" and czy = '"+map.get("czy")+"'";
+         if (!"".equals(czy) & StringUtils.isNotEmpty(czy)) {
+         	str=str+" and czy = '"+czy+"'";
          }
-         if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-         	str=str+" and sj >= '"+map.get("dateb")+"'";
+         if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+         	str=str+" and sj >= '"+dateb+"'";
          }else{
          	str=str+" and sj >= '"+hehe+" 00:00:00'";
          }
-         if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-         	str=str+" and sj <= '"+map.get("datee")+"'";
+         if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+         	str=str+" and sj <= '"+datee+"'";
          }else{
          	str=str+" and sj <= '"+hehe+" 23:59:59'";
          }
@@ -68,6 +70,7 @@ public class QueryExcelAction extends BaseAction {
        
         
         Sql sql=Sqls.create(str);
+      
         sql.setEntity(dao.getEntity(Cktj.class));
         sql.setCallback(Sqls.callback.entities());
 
@@ -78,20 +81,21 @@ public class QueryExcelAction extends BaseAction {
     }
     //小组营业统计
     @At()
-    public List<Xzyytj> queryXzyytjJson(Map<String, String> map) throws Exception {
-    	 String str="select distinct dep_name,lname,summoney,zrs from view_dz_yysbs where 1=1 ";
-         if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-         	str=str+" and rq >= '"+map.get("dateb")+"'";
+    @Ok("json")
+    public List<Xzyytj> queryXzyytjJson(String dateb,String datee,String yyz) throws Exception {
+    	 String str="select distinct dep_name,lname,summoney,zrs from view_dz_yysbs where 1=1";
+         if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+         	str=str+" and rq >= '"+dateb+"'";
          }else{
          	str = str +" and rq >= '"+hehe+" 00:00:00'";
          }
-         if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-         	str=str+" and rq <= '"+map.get("datee")+"'";
+         if (!"".equals(datee) & StringUtils.isNotEmpty(datee) ){
+         	str=str+" and rq <= '"+datee+"'";
          }else{
          	str = str + " and rq <= '"+hehe+" 23:59:59'";
          }
-         if (map.containsKey("yyz") & StringUtils.isNotEmpty(map.get("yyz"))) {
-         	str=str+" and dep_serial ='"+map.get("yyz")+"'";
+         if (!"".equals(yyz) & StringUtils.isNotEmpty(yyz)) {
+         	str=str+" and dep_serial ='"+yyz+"'";
          }
         
         Sql sql=Sqls.create(str);
@@ -104,31 +108,29 @@ public class QueryExcelAction extends BaseAction {
         return list;
     }
     
-  //存款明细Json
+    
+    
+    //存款明细Json
     @At()
-    public List<Ckmx> queryCkmxJson(Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Ckmx> queryCkmxJson(String lx,String bh,String xm,String dateb,String datee) throws Exception {
         String count="select * from  view_dz_ckmx where 1=1 and ckrq >= @dateb and ckrq <= @datee ";
         
-        if (map.containsKey("lx") & StringUtils.isNotEmpty(map.get("lx"))) {
-        	count=count+" and lx = @lx";
+        if (!"".equals(lx) & StringUtils.isNotEmpty(lx)) {
+        	count=count+" and lx = "+lx;
         }
-        if (map.containsKey("bh") & StringUtils.isNotEmpty(map.get("bh"))) {
-        	count=count+" and bh = @bh";
+        if (!"".equals(bh)& StringUtils.isNotEmpty(bh)) {
+        	count=count+" and bh = '"+bh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	count=count+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	count=count+" and xm like '%"+xm+"%'";
         }
-        count=count+" order by ckrq desc";
+        count=count+"order by ckrq desc";
         Sql sql1=Sqls.create(count);
         
-        if (map.containsKey("lx") & StringUtils.isNotEmpty(map.get("lx"))) {
-        	sql1.setParam("lx",map.get("lx"));
-        }
-        if (map.containsKey("bh") & StringUtils.isNotEmpty(map.get("bh"))) {
-        	sql1.setParam("bh",map.get("bh"));
-        }
-        sql1.setParam("dateb",map.get("dateb"));
-        sql1.setParam("datee",map.get("datee"));
+       
+        sql1.setParam("dateb",dateb);
+        sql1.setParam("datee",datee);
         
         sql1.setEntity(dao.getEntity(Ckmx.class));
         sql1.setCallback(Sqls.callback.entities());
@@ -144,21 +146,22 @@ public class QueryExcelAction extends BaseAction {
     
     //取款明细Json
     @At()
-    public List<Qkmx> queryQkmxJson(Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Qkmx> queryQkmxJson(String bh,String xm ,String dateb,String datee) throws Exception {
         String cout="select * from  view_dz_qkmx where 1=1 ";
-        if (map.containsKey("bh") & StringUtils.isNotEmpty(map.get("bh"))) {
-        	cout=cout+" and bh = '"+map.get("bh")+"'";
+        if (!"".equals(bh) & StringUtils.isNotEmpty(bh)) {
+        	cout=cout+" and bh = '"+bh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and qksj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and qksj >= '"+dateb+"'";
         }else{
         	cout=cout+" and qksj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and qksj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and qksj <= '"+datee+"'";
         }else{
         	cout=cout+" and qksj <= '"+hehe+" 23:59:59'";
         }
@@ -178,22 +181,23 @@ public class QueryExcelAction extends BaseAction {
     
     //消费明细Json
     @At()
-    public List<Xfmx> queryXfmxJson(Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Xfmx> queryXfmxJson(String rybh,String xm,String xfsj,String dateb,String datee) throws Exception {
        
         String cout="select * from view_dz_xfmx where 1=1 and lx=0";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and xfsj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and xfsj >= '"+dateb+"'";
         }else{
         	cout=cout+" and xfsj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and xfsj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and xfsj <= '"+datee+"'";
         }else{
         	cout=cout+" and xfsj <= '"+hehe+" 23:59:59'";
         }
@@ -214,22 +218,23 @@ public class QueryExcelAction extends BaseAction {
     
     //消费计次明细Json
     @At()
-    public List<Jcxfmx> queryXfjcmxJson( Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Jcxfmx> queryXfjcmxJson(String rybh,String xm,String xfsj,String dateb,String datee) throws Exception {
       
         String cout="select * from view_dz_xfmx where 1=1 and lx=1";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and xfsj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and xfsj >= '"+dateb+"'";
         }else{
         	cout=cout+" and xfsj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and xfsj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and xfsj <= '"+datee+"'";
         }else{
         	cout=cout+" and xfsj <= '"+hehe+" 23:59:59'";
         }
@@ -249,22 +254,23 @@ public class QueryExcelAction extends BaseAction {
 
     //开户人员报表
     @At()
-    public List<Khrybb> queryKhrybbJson( Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Khrybb> queryKhrybbJson( String rybh,String xm,String dateb,String datee,String kssj) throws Exception {
       
         String cout="select * from view_dz_Khrybb where 1=1 ";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and khsj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and khsj >= '"+dateb+"'";
         }else{
         	cout=cout+" and khsj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and khsj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and khsj <= '"+datee+"'";
         }else{
         	cout=cout+" and khsj <= '"+hehe+" 23:59:59'";
         }
@@ -284,22 +290,23 @@ public class QueryExcelAction extends BaseAction {
     
     //撤户人员报表
     @At()
-    public List<Chrybb> queryChrybbJson( Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Chrybb> queryChrybbJson( String rybh,String xm,String dateb,String chsj,String datee) throws Exception {
       
         String cout="select * from view_dz_chrybb where 1=1 ";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and chsj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and chsj >= '"+dateb+"'";
         }else{
         	cout=cout+" and chsj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and chsj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and chsj <= '"+datee+"'";
         }else{
         	cout=cout+" and chsj <= '"+hehe+" 23:59:59'";
         }
@@ -320,22 +327,23 @@ public class QueryExcelAction extends BaseAction {
     
     //挂失办卡人员报表
     @At()
-    public List<Gsbkrybb> queryGsbkrybbJson( Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Gsbkrybb> queryGsbkrybbJson( String rybh,String xm,String dateb,String datee,String bksj) throws Exception {
       
         String cout="select * from view_dz_gsbkbb where 1=1 ";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm)& StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and bksj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and bksj >= '"+dateb+"'";
         }else{
         	cout=cout+" and bksj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and bksj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and bksj <= '"+datee+"'";
         }else{
         	cout=cout+" and bksj <= '"+hehe+" 23:59:59'";
         }
@@ -356,22 +364,23 @@ public class QueryExcelAction extends BaseAction {
     
     //纠错人员报表
     @At()
-    public List<Jcrybb> queryJcrybbJson( Map<String, String> map) throws Exception {
+    @Ok("json")
+    public List<Jcrybb> queryJcrybbJson(String rybh,String xm,String dateb,String datee,String jcsj) throws Exception {
       
         String cout="select * from view_dz_jcrybb where 1=1 ";
-        if (map.containsKey("rybh") & StringUtils.isNotEmpty(map.get("rybh"))) {
-        	cout=cout+" and rybh = '"+map.get("rybh")+"'";
+        if (!"".equals(rybh) & StringUtils.isNotEmpty(rybh)) {
+        	cout=cout+" and rybh = '"+rybh+"'";
         }
-        if (map.containsKey("xm") & StringUtils.isNotEmpty(map.get("xm"))) {
-        	cout=cout+" and xm like '%"+map.get("xm")+"%'";
+        if (!"".equals(xm) & StringUtils.isNotEmpty(xm)) {
+        	cout=cout+" and xm like '%"+xm+"%'";
         }
-        if (map.containsKey("dateb") & StringUtils.isNotEmpty(map.get("dateb"))) {
-        	cout=cout+" and jcsj >= '"+map.get("dateb")+"'";
+        if (!"".equals(dateb) & StringUtils.isNotEmpty(dateb)) {
+        	cout=cout+" and jcsj >= '"+dateb+"'";
         }else{
         	cout=cout+" and jcsj >= '"+hehe+" 00:00:00'";
         }
-        if (map.containsKey("datee") & StringUtils.isNotEmpty(map.get("datee"))) {
-        	cout=cout+" and jcsj <= '"+map.get("datee")+"'";
+        if (!"".equals(datee) & StringUtils.isNotEmpty(datee)) {
+        	cout=cout+" and jcsj <= '"+datee+"'";
         }else{
         	cout=cout+" and jcsj <= '"+hehe+" 23:59:59'";
         }
@@ -389,8 +398,4 @@ public class QueryExcelAction extends BaseAction {
         return list1;
     }
     
-
-
-
-
 }
