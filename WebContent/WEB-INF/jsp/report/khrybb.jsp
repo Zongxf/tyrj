@@ -146,59 +146,17 @@
         }
         
         function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
         	var lx = $("#lx").val();
-        	var bh = $("#bh").val();
+        	var rybh = $("#bh").val();
         	var xm = $("#xm").val();
         	var dateb = $("#dateb").val();
         	var datee = $("#datee").val();
-        	if(lx!=""){
-        		data =data+ "lx:"+lx+"&";
-        	}
-        	if(bh!=""){
-        		data =data+"rybh:"+bh+"&";
-        	}
-        	if(xm!=""){
-        		data =data+"xm:"+xm+"&";
-        	}
-        	if(dateb!=""){
-        		data =data+"dateb:"+dateb+"&";
-        	}
-        	if(datee!=""){
-        		data =data+"datee:"+datee+"&";
-        	}
-        	
-        	
-        	
+        	 var dqczy = "<%=session.getAttribute("username")%>";
+             var time=year+"-"+month+"-"+strDate;
+            var url = cjkEncode("${ctx}/ReportServer?reportlet=khrybb.cpt&dateb="+dateb+"&datee="+datee+"&lx="
+            		+lx+"&p1="+dqczy+"&p2="+time+"&rybh="+rybh+"&xm="+xm);
             
-        	title = "开户人员报表&人员编号&姓名&部门&账户类型&开户时间&卡号&操作员&";
-            
-            var zkhrs = $("#zkhrs").val();
-    	    if(zkhrs==""){
-    	    	zkhrs="0";
-    	    }
-            count = "开户总人数：&"+zkhrs+"&";
-            $.ajax({  
-                url: '${ctx}/export_new/exportCkmx.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export_new/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
+            	 window.open(url); 
         }
             
         

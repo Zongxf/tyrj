@@ -47,7 +47,8 @@
 		        <input type="hidden" name="user.Gly_no" value="super"  >
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><input type="submit" value="提交" class="buttonbg01"> <input type="button" value="取消" class="buttonbg01" onclick="doHide()"></td>
+				<td colspan="2" align="center"><input type="submit" value="提交" class="buttonbg01"> 
+				<input type="button" value="取消" class="buttonbg01" onclick="doHide()"></td>
 			</tr>
 		</table>
 		

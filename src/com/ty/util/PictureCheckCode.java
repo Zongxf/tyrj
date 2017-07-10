@@ -24,15 +24,16 @@ public class PictureCheckCode {
     // 验证码字符个数  
     private int codeCount = 4;  
     // 验证码干扰线数  
-    private int lineCount = 50;  
+//    private int lineCount = 50;  
     // 验证码  
     private String code = null;  
     // 验证码图片Buffer  
     private BufferedImage buffImg = null;  
   
-    private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',  
+   /* private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',  
             'I', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',  
-            'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9' };  
+            'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9' };  */
+    private char[] codeSequence = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };  
   
     // 生成随机数  
     private Random random = new Random();  
@@ -69,7 +70,7 @@ public class PictureCheckCode {
         this.width = width;  
         this.height = height;  
         this.codeCount = codeCount;  
-        this.lineCount = lineCount;  
+        //this.lineCount = lineCount;  
         this.createCode();  
     }  
   
@@ -93,14 +94,14 @@ public class PictureCheckCode {
         g.setFont(font);  
   
         // 绘制干扰线  
-        for (int i = 0; i < lineCount; i++) {  
+      /*  for (int i = 0; i < lineCount; i++) {  
             int xs = getRandomNumber(width);  
             int ys = getRandomNumber(height);  
             int xe = xs + getRandomNumber(width / 8);  
             int ye = ys + getRandomNumber(height / 8);  
             g.setColor(getRandomColor());  
             g.drawLine(xs, ys, xe, ye);  
-        }  
+        }  */
   
         StringBuffer randomCode = new StringBuffer();  
         // 随机产生验证码字符  
@@ -156,7 +157,7 @@ public class PictureCheckCode {
                         new ByteArrayInputStream(hex2byte(getFontByteStr())));  
                 return baseFont.deriveFont(Font.PLAIN, fontHeight);  
             } catch (Exception e) {  
-                return new Font("Arial", Font.PLAIN, fontHeight);  
+                return new Font("微软雅黑", Font.PLAIN, fontHeight);  
             }  
         }  
   

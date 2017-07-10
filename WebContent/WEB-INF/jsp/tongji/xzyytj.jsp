@@ -122,51 +122,15 @@
         //导出
          
         function f_save() {  
-        	  
-              	var data="";
-              	var title="";
-              	var count="";
               	var yyz = $("#yyz").val();
               	var dateb = $("#dateb").val();
               	var datee = $("#datee").val();
-              	if(yyz!=""){
-              		data =data+ "yyz:"+yyz+"&";
-              	}
-              	if(dateb!=""){
-              		data =data+"dateb:"+dateb+"&";
-              	}
-              	if(datee!=""){
-              		data =data+"datee:"+datee+"&";
-              	}
+              	 var dqczy = "<%=session.getAttribute("username")%>";
+                 var time=year+"-"+month+"-"+strDate;
+                var url = "${ctx}/ReportServer?reportlet=xzyytj.cpt&dateb="+dateb+"&datee="+datee+"&yyz="+yyz+"&p1="+dqczy+"&p2="+time;
+               
+                	 window.open(url); 
               	
-              	
-                  
-              	 title = "小组营业统计&小组名&餐别类型&营业总额&营业人次";
-                 
-                 var zyye = $("#zyye").val();
-         	    if(zyye==""){
-         	    	zyye="0";
-         	    }
-                 count = "总营业金额：&"+zyye+"&";
-                  $.ajax({  
-                      url: '${ctx}/export_new/exportCkmx.do',  
-                      data: {  
-                      	"data":data,"title":title,"count":count
-                      },
-                      type:"post",
-                      dataType:"json",
-                      success: function (data) {  
-                      	if(data.success){
-                      		//alert(data.fileName);
-                      		window.location.href="${ctx}/export_new/downloadFile.do";
-                      	}else{
-                      		alert("导出失败！");
-                      	}
-                      },  
-                      error: function (message) {  
-                      	alert(message);  
-                      }  
-                  });  
               }
            
            

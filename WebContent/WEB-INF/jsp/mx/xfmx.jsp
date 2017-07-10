@@ -134,56 +134,17 @@
         }
         //导出excel
          function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
+        	
         	var bh = $("#bh").val();
         	var xm = $("#xm").val();
         	var dateb = $("#dateb").val();
         	var datee = $("#datee").val();
+        	 var dqczy = "<%=session.getAttribute("username")%>";
+             var time=year+"-"+month+"-"+strDate;
+            var url = cjkEncode("${ctx}/ReportServer?reportlet=xfmx.cpt&dateb="+dateb+"&datee="+datee+"&p1="+dqczy+"&p2="+time+"&rybh="+bh+"&xm="+xm);
+           
+            	 window.open(url); 
         	
-        	if(bh!=""){
-        		data =data+"rybh:"+bh+"&";
-        	}
-        	if(xm!=""){
-        		data =data+"xm:"+xm+"&";
-        	}
-        	if(dateb!=""){
-        		data =data+"dateb:"+dateb+"&";
-        	}
-        	if(datee!=""){
-        		data =data+"datee:"+datee+"&";
-        	}
-        	
-        	
-        	
-            
-        	 title = "消费明细&人员编号&姓名&部门&消费金额&剩余金额&消费时间&消费机号&";
-             var zxfje = $("#zxfje").val();
-             //alert(zxfje);
-     	    if(zxfje==""){
-     	    	zxfje="0";
-     	    }
-             count = "消费总金额：&"+zxfje+"&";
-            $.ajax({  
-                url: '${ctx}/export_new/exportCkmx.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export_new/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
         }
         
         

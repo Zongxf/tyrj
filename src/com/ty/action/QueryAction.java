@@ -70,12 +70,19 @@ public class QueryAction extends BaseAction {
     	String chrs = "select count(*) as chrs,SUM(txj)+SUM(tbt) as bh  from view_dz_chrybb  where 1 = 1 ";
     	String gsrs = "select count(*) as gsrs,sum(syje) as bh from view_dz_gsbkbb where 1=1";
     	String xjckrs =  "select count(a.bh) as xjckrs,sum(a.ckje) as xjbh from dbo.view_dz_ckmx a left join dbo.xf_mx b on a.bh=b.user_serial "
-    			+"where a.lx=1 and b.gly_no != 'CBC' "; 
+    			+"where a.lx=1 and b.gly_no != 'CCB' "; 
     	String btckrs =  "select count(*) as btckrs,sum(ckje) as btbh from view_dz_ckmx where lx=2 "; 
     	String qcrs = "select count(a.bh) as qcrs,sum(a.ckje) as qcbh from dbo.view_dz_ckmx a left join dbo.xf_mx b on a.bh=b.user_serial "
-                   +" where a.lx=1 and b.gly_no = 'CBC'";
+                   +" where a.lx=1 and b.gly_no = 'CCB'";
     	String qkrs =  "select count(*) as qkrs,sum(qkje) as qkbh from view_dz_qkmx where 1=1 "; 
     	String zyye = "select sum(zrs) as zyyrs,sum(summoney) as zyyje from view_dz_yysbs where 1=1";
+    	
+    	String syje ="select  ISNULL(b.xsyje,0)+isnull(a.szsy,0) as ssyje, ISNull(c.xsyje,0) as xsyje,"
+         +"CONVERT(varchar(10),GETDATE(),120) as tjsj "
+         +" from (select SUM(szsy) as szsy from view_dz_phjc  where rq>=@dateb and rq<=@datee ) a ,"
+         +"(select sum(xsyje) as xsyje from view_dz_xsyje where rq<=@dateb) b,"
+         +"(select SUM(xsyje) as xsyje from view_dz_xsyje where rq<=@datee) c ";
+    	String inserts = "insert into xf_mx_tj ";
     	if(StringUtils.isNotEmpty(dateb)){
     		khrs = khrs + " and khsj >= '"+dateb+"'";
     		chrs = chrs + " and chsj >= '"+dateb+"'";
@@ -85,6 +92,7 @@ public class QueryAction extends BaseAction {
     		qkrs = qkrs + " and qksj >= '"+dateb+"'";
     		qcrs = qcrs + " and ckrq >= '"+dateb+"'";
     		zyye = zyye + " and rq >= '"+dateb+"'";
+    		
     		
     	}else{
     		khrs = khrs + " and khsj >= '"+hehe +" 00:00:00'";
@@ -106,6 +114,7 @@ public class QueryAction extends BaseAction {
     		qkrs = qkrs + " and qksj <= '"+datee+"'";
     		qcrs = qcrs + " and ckrq <= '"+datee+"'";
     		zyye = zyye + " and rq <= '"+datee+"'";
+    
     		
     	}else{
     		khrs = khrs + " and khsj <= '"+hehe +" 23:59:59'";
@@ -116,8 +125,10 @@ public class QueryAction extends BaseAction {
     		qkrs = qkrs + " and qksj <= '"+hehe +" 23:59:59'";
     		qcrs = qcrs + " and ckrq <= '"+hehe +" 23:59:59'";
     		zyye = zyye + " and rq <= '"+hehe +" 23:59:59'";
+    	
     		datee = hehe+" 23:59:59";
     	}
+    
     	
     	Sql sql = Sqls.create(khrs);
     	Sql sql1 = Sqls.create(chrs);
@@ -127,6 +138,20 @@ public class QueryAction extends BaseAction {
     	Sql sql5 = Sqls.create(qkrs);
     	Sql sql6 = Sqls.create(qcrs);
     	Sql sql7 = Sqls.create(zyye);
+    	Sql sql8 = Sqls.create(syje);
+    	
+    	if(StringUtils.isNotEmpty(dateb)){
+    		 sql8.setParam("dateb",dateb);
+    	}else{
+            sql8.setParam("dateb",hehe+" 00:00:00");
+    	}
+        if(StringUtils.isNotEmpty(datee)){
+            sql8.setParam("datee",datee);
+    		
+    	}else{
+    		sql8.setParam("datee",hehe+" 23:59:59");
+    	}
+    	
     	sql.setCallback(new SqlCallback() {
 			@Override
 			public Object invoke(Connection arg0, ResultSet arg1, Sql arg2)
@@ -231,6 +256,19 @@ public class QueryAction extends BaseAction {
 				
 			}
 		});
+    	sql8.setCallback(new SqlCallback() {
+			@Override
+			public Object invoke(Connection arg0, ResultSet arg1, Sql arg2)
+					throws SQLException {
+				List<String> list = new ArrayList<String>();
+				while(arg1.next()){
+					list.add(arg1.getString("ssyje"));
+					list.add(arg1.getString("xsyje"));
+				}
+				return list;
+				
+			}
+		});
     	
     	dao.execute(sql);
     	dao.execute(sql1);
@@ -240,6 +278,7 @@ public class QueryAction extends BaseAction {
     	dao.execute(sql5);
     	dao.execute(sql6);
     	dao.execute(sql7);
+    	dao.execute(sql8);
     	
     	Integer khrs1 = Integer.parseInt(sql.getList(String.class).get(0));
     	Integer chrs1 = Integer.parseInt(sql1.getList(String.class).get(0));
@@ -249,6 +288,7 @@ public class QueryAction extends BaseAction {
     	Integer qkrs1 = Integer.parseInt(sql5.getList(String.class).get(0));
     	Integer qcrs1 = Integer.parseInt(sql6.getList(String.class).get(0));
     	String zyye1 = sql7.getList(String.class).get(0);
+    	String ssyje = sql8.getList(String.class).get(0);
     	
     	//String khrs2 = sql.getList(String.class).get(1);
     	String chrs2 = sql1.getList(String.class).get(1);
@@ -258,6 +298,34 @@ public class QueryAction extends BaseAction {
     	String qkrs2 = sql5.getList(String.class).get(1);
     	String qcrs2 = sql6.getList(String.class).get(1);
     	String zyye2 = sql7.getList(String.class).get(1);
+    	String xsyje = sql8.getList(String.class).get(1);
+    	if(StringUtils.isNotEmpty(ssyje)&&!"".equals(ssyje)&&StringUtils.isNotEmpty(xsyje)&&!"".equals(xsyje)){
+    		inserts = inserts + syje;
+    		Sql sql9 = Sqls.create(inserts);
+    		if(StringUtils.isNotEmpty(dateb)){
+       		 sql9.setParam("dateb",dateb);
+       	}else{
+               sql9.setParam("dateb",hehe+" 00:00:00");
+       	}
+           if(StringUtils.isNotEmpty(datee)){
+               sql9.setParam("datee",datee);
+       		
+       	}else{
+       		sql9.setParam("datee",hehe+" 23:59:59");
+       	}
+    		dao.execute(sql9);
+        	
+    		req.setAttribute("ysyje", ssyje);
+    		req.setAttribute("xsyje", xsyje);
+    		if(ssyje.equals(xsyje)){
+        		req.setAttribute("phyc", "平衡");
+        	}else{
+        		req.setAttribute("phyc", "不平衡");
+        	}
+    	}else{
+    		req.setAttribute("phyc", "数值为空");
+    	}
+    	
     	
     	if(khrs1!=null){
     		a = a+khrs1;
@@ -377,6 +445,13 @@ public class QueryAction extends BaseAction {
           req.setAttribute("czy", list1);
     }
     
+  //小组营业统计
+    @At()
+    @Ok("jsp:jsp/tongji/xzyytj")
+    public void queryXzyytj(HttpServletRequest req) throws Exception {
+    } 
+ 
+    
   //存款明细
     @At()
     @Ok("jsp:jsp/mx/ckmx")
@@ -408,13 +483,10 @@ public class QueryAction extends BaseAction {
     public void queryXfjcmx(HttpServletRequest req) throws Exception {
           
     }
-   
     
-    //小组营业统计
-    @At()
-    @Ok("jsp:jsp/tongji/xzyytj")
-    public void queryXzyytj(HttpServletRequest req) throws Exception {
-    }
+  
+    
+    
    
     //存款统计Json
     @At()
@@ -716,6 +788,9 @@ public class QueryAction extends BaseAction {
         resMap.put("Rows", list);
         return resMap;
     }
+
+    
+    
 
 
 

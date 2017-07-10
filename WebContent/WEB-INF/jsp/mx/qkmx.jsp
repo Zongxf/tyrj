@@ -138,55 +138,16 @@
         
       //导出excel
           function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
+        	
         	var bh = $("#bh").val();
         	var xm = $("#xm").val();
         	var dateb = $("#dateb").val();
         	var datee = $("#datee").val();
-        	if(bh!=""){
-        		data =data+"bh:"+bh+"&";
-        	}
-        	if(xm!=""){
-        		data =data+"xm:"+xm+"&";
-        	}
-        	if(dateb!=""){
-        		data =data+"dateb:"+dateb+"&";
-        	}
-        	if(datee!=""){
-        		data =data+"datee:"+datee+"&";
-        	}
-        	
-        	
-        	
-            
-        	 title = "取款明细&人员编号&姓名&部门&取款金额&取现金&取补贴&剩余金额&取款时间&";
-             var zqkje = $("#zqkje").val();
-             //alert(zxfje);
-     	    if(zqkje==""){
-     	    	zqkje="0";
-     	    }
-             count = "取款总金额：&"+zqkje+"&";
-            $.ajax({  
-                url: '${ctx}/export_new/exportCkmx.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export_new/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
+        	 var dqczy = "<%=session.getAttribute("username")%>";
+             var time=year+"-"+month+"-"+strDate;
+            var url = cjkEncode("${ctx}/ReportServer?reportlet=qkmx.cpt&dateb="+dateb+"&datee="+datee+"&p1="+dqczy+"&p2="+time+"&bh="+bh+"&xm="+xm);
+           
+            	 window.open(url); 
         }
       
         

@@ -56,19 +56,23 @@ public class ExportAction_new extends BaseAction{
         @Inject
         QueryExcelAction queryExcelAction;
         
+        Date now = new Date(); 
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	String he = dateFormat.format( now ); 
+
+        
     	public String fileName ="";
-    	public List<Ckmx> list1=new ArrayList<Ckmx>();
-    	public List<Qkmx> list2=new ArrayList<Qkmx>();
-    	public List<Xfmx> list3=new ArrayList<Xfmx>();
-    	public List<Jcxfmx> list4=new ArrayList<Jcxfmx>();
-    	public List<Cktj> list5=new ArrayList<Cktj>();
-    	public List<Xzyytj> list6=new ArrayList<Xzyytj>();
-    	public List<Khrybb> list7=new ArrayList<Khrybb>();
-    	public List<Chrybb> list8=new ArrayList<Chrybb>();
-    	public List<Gsbkrybb> list9=new ArrayList<Gsbkrybb>();
-    	public List<Jcrybb> list10=new ArrayList<Jcrybb>();
-        public String [][] aa=new String[2][2];
-	    public ExportAction_new() {
+    	private List<Ckmx> list1=new ArrayList<Ckmx>();
+    	private List<Qkmx> list2=new ArrayList<Qkmx>();
+    	private List<Xfmx> list3=new ArrayList<Xfmx>();
+    	private List<Jcxfmx> list4=new ArrayList<Jcxfmx>();
+    	private List<Cktj> list5=new ArrayList<Cktj>();
+    	private List<Xzyytj> list6=new ArrayList<Xzyytj>();
+    	private List<Khrybb> list7=new ArrayList<Khrybb>();
+    	private List<Chrybb> list8=new ArrayList<Chrybb>();
+    	private List<Gsbkrybb> list9=new ArrayList<Gsbkrybb>();
+    	private List<Jcrybb> list10=new ArrayList<Jcrybb>();
+    	public ExportAction_new() {
 	        resMap = new HashMap<String, Object>();
 
 	    }
@@ -76,8 +80,9 @@ public class ExportAction_new extends BaseAction{
 	    @At()
 		@Ok("json")
 		@Filters
-		public Map<String, Object> exportCkmx(String data,String title, String count,HttpServletRequest req) throws Exception
+		public Map<String, Object> exportCkmx(String data,String title, String count,String dqczy,HttpServletRequest req) throws Exception
 		{   
+	    	String [][] aa=new String[2][2];
 	    	//初始化列表
 	        HSSFWorkbook wb = new HSSFWorkbook();  
 	  	    HSSFSheet sheet = wb.createSheet();  
@@ -101,6 +106,10 @@ public class ExportAction_new extends BaseAction{
              //获取标题
              String [] tt;
              tt = title.split("&");
+             
+           //获取标题
+             String [] dd;
+             dd = dqczy.split("&");
              
              if(tt[0].equals("存款明细")){
             	 list1 = queryExcelAction.queryCkmxJson(map);
@@ -315,13 +324,10 @@ public class ExportAction_new extends BaseAction{
 		         int number = tt.length-1;
 		         
 		         // 给工作表列定义列宽(实际应用自己更改列数)  
-		         for (int i = 0; i <= number; i++) {  
+		         for (int i = 0; i < number; i++) {  
 		             sheet.setColumnWidth(i, 5000);  
 		         } 
-		         if(!"".equals(tj[0])){
-		        	 sheet.setColumnWidth(number+1, 5000);  
-		        	 sheet.setColumnWidth(number+2, 5000);  
-		         }
+		       sheet.setDefaultColumnWidth(20);
 		         // 创建单元格样式  
 		         HSSFCellStyle cellStyle = wb.createCellStyle();  
 		         
@@ -341,7 +347,7 @@ public class ExportAction_new extends BaseAction{
 		         cellStyle.setTopBorderColor(HSSFColor.BLACK.index);  
 		  
 		         // 指定当单元格内容显示不下时自动换行  
-		         cellStyle.setWrapText(true);  
+		         cellStyle.setWrapText(true);
 		         
 		         // 设置单元格字体  
 		         HSSFFont font = wb.createFont();  
@@ -349,29 +355,47 @@ public class ExportAction_new extends BaseAction{
 		         font.setFontName("宋体");  
 		         font.setFontHeight((short) 200);  
 		         cellStyle.setFont(font);  
-		         HSSFRow row1 = sheet.createRow(0);  
-		         
-		         HSSFCell row1Cell = null;  
+		         HSSFRow row0 = sheet.createRow(0);  
+		         HSSFCell row0Cell = null;  
 		         int m = 1;  
-		  
+			         row0Cell = row0.createCell(0);  
+	                 row0Cell.setCellStyle(cellStyle);  
+	                 row0Cell.setCellValue(new HSSFRichTextString(tt[0])); 
+	                 
+	                 HSSFRow row1 = sheet.createRow(1);  
+			         HSSFCell row1Cell = null;       
+			         row1Cell = row1.createCell(0);  
+	                 row1Cell.setCellStyle(cellStyle);  
+	                 row1Cell.setCellValue(new HSSFRichTextString(dd[0]+dd[1])); 
+	                 
+	                 row1Cell = row1.createCell(1);  
+	                 row1Cell.setCellStyle(cellStyle);  
+	                 row1Cell.setCellValue(new HSSFRichTextString("时间：")); 
+	                 
+	                 row1Cell = row1.createCell(2);  
+	                 row1Cell.setCellStyle(cellStyle);  
+	                 row1Cell.setCellValue(new HSSFRichTextString(he));
+		        	 if(!"".equals(tj[0])){
+			        	 row1Cell = row1.createCell(3);  
+		                 row1Cell.setCellStyle(cellStyle);  
+		                 row1Cell.setCellValue(new HSSFRichTextString(tj[0])); 
+		                 row1Cell = row1.createCell(4);  
+		                 row1Cell.setCellStyle(cellStyle);  
+		                 row1Cell.setCellValue(new HSSFRichTextString(tj[1])); 
+			         }
+		          HSSFRow rowe = sheet.createRow(2);  
+			         
+				  HSSFCell roweCell = null;  
 		         // 创建不同的列标题  
 		         for (int i = 0; i < number; i = i + 1) {  
 		             
 		             if (i <=  number) {  
-		                 row1Cell = row1.createCell(i);  
-		                 row1Cell.setCellStyle(cellStyle);  
-		                 row1Cell.setCellValue(new HSSFRichTextString(tt[m]  
+		                 roweCell = rowe.createCell(i);  
+		                 roweCell.setCellStyle(cellStyle);  
+		                 roweCell.setCellValue(new HSSFRichTextString(tt[m]  
 		                         .toString()));  
 		                 m++;  
 		             }
-		         }
-		         if(!"".equals(tj[0])){
-		        	 row1Cell = row1.createCell(number);  
-	                 row1Cell.setCellStyle(cellStyle);  
-	                 row1Cell.setCellValue(new HSSFRichTextString(tj[0])); 
-	                 row1Cell = row1.createCell(number+1);  
-	                 row1Cell.setCellStyle(cellStyle);  
-	                 row1Cell.setCellValue(new HSSFRichTextString(tj[1])); 
 		         }
 		         //创建内容行
 		         HSSFCell rowCell = null;
@@ -379,8 +403,8 @@ public class ExportAction_new extends BaseAction{
 	        	 if(aa.length>0){
 	        		if(list1.size()>0){
 	        		 for(int i=0;i<list1.size();i++){
-	        			 row = sheet.createRow(i+1); 
-			        	 for(int j=0;j<tt.length;j++){
+	        			 row = sheet.createRow(i+3); 
+			        	 for(int j=0;j<number;j++){
 			        		 rowCell = row.createCell(j);  
 			                 rowCell.setCellStyle(cellStyle);  
 			                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -389,8 +413,8 @@ public class ExportAction_new extends BaseAction{
 			         }
 	        		}else if(list2.size()>0){
 		        		 for(int i=0;i<list2.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -399,8 +423,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list3.size()>0){
 		        		 for(int i=0;i<list3.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -409,8 +433,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list4.size()>0){
 		        		 for(int i=0;i<list4.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -419,8 +443,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list5.size()>0){
 		        		 for(int i=0;i<list5.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -429,8 +453,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list6.size()>0){
 		        		 for(int i=0;i<list6.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -439,8 +463,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list7.size()>0){
 		        		 for(int i=0;i<list7.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -449,8 +473,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list8.size()>0){
 		        		 for(int i=0;i<list8.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -459,8 +483,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list9.size()>0){
 		        		 for(int i=0;i<list9.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -469,8 +493,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}else if(list10.size()>0){
 		        		 for(int i=0;i<list10.size();i++){
-		        			 row = sheet.createRow(i+1);
-				        	 for(int j=0;j<tt.length;j++){
+		        			 row = sheet.createRow(i+3);
+				        	 for(int j=0;j<number;j++){
 				        		 rowCell = row.createCell(j);  
 				                 rowCell.setCellStyle(cellStyle);  
 				                 rowCell.setCellValue(new HSSFRichTextString(aa[i][j]));  
@@ -479,7 +503,8 @@ public class ExportAction_new extends BaseAction{
 				         }
 		        		}
 	        	 }
-		         
+	        	 
+	        	 
 		         exportExcel.outputExcel(path+fileName);  
 					resMap.put("success", true);
 				

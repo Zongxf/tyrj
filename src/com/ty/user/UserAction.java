@@ -29,6 +29,7 @@ import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
+import com.ty.bean.Depart;
 import com.ty.bean.Node;
 import com.ty.framework.action.BaseAction;
 
@@ -124,6 +125,7 @@ public class UserAction extends BaseAction
 		session.removeAttribute("userInfo");
 		session.removeAttribute("authMap");
 		session.removeAttribute("nodelist");
+		session.removeAttribute("departlist");
 		resMap.clear();
 
 		try
@@ -189,6 +191,25 @@ public class UserAction extends BaseAction
 						}
 
 						session.setAttribute("authMap", authMap);
+						
+				    	//获取部门列表
+				        String count="select * from view_dz_depart";
+				        
+				        Sql sql=Sqls.create(count);
+				        sql.setEntity(dao.getEntity(Depart.class));
+				        sql.setCallback(Sqls.callback.entities());
+				        
+				        dao.execute(sql);
+				        
+				        List<Depart> list1 = sql.getList(Depart.class);
+				        for(int i=0;i<list1.size();i++){
+				        	String id = list1.get(i).getId();
+				        	String pid = list1.get(i).getPid();
+				        	if(id.equals("0")&&pid.equals("0")){
+				        		list1.get(i).setPid("");;
+				        	};
+				        }
+				        session.setAttribute("departlist", list1);
 
 					} catch (Exception e)
 					{

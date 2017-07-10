@@ -1,7 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ include file="/common/header.jsp"%>
 <style>
-<!--
+
 @import url("${ctx }/common/style.css");
 .buttonbg01 {
 	background-image: url(${ctx }/img/btn_bg01.gif);
@@ -33,7 +33,7 @@
 			.box td{line-height:28px; border-left:#FCFAF6 1px solid;border-top:#FCFAF6 1px solid;border-right: #EFEADA 1px solid;border-bottom: #EFEADA 1px solid;}
 			.T { padding-left:50px; color:#FFF; font-weight:bold; font-size:14px; line-height:35px; padding-top:6px;}
 			
--->
+
 
 </style>
 
@@ -50,6 +50,7 @@
 <script src="${ctx }/ligerUI/123/js/core/base.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerDialog.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerLayout.js" type="text/javascript"></script>
+<script src="${ctx}/ligerUI/123/js/plugins/ligerDrag.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerTab.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerTree.js" type="text/javascript"></script>
 <script src="${ctx }/ligerUI/123/js/plugins/ligerGrid.js" type="text/javascript"></script>
@@ -58,6 +59,11 @@
 <link href="${ctx }/echarts/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <script src="${ctx }/echarts/js/bootstrap.min.js" type="text/javascript"></script>
 <link href="${ctx }/common/comm.css" rel="stylesheet" type="text/css"/>
+<script src="${ctx }/common/comm.js" type="text/javascript"></script>
+
+<!--     <link href="../../lib/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css" /> -->
+  
+
 
    
 
@@ -76,4 +82,7 @@
 <script type="text/javascript" src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
 
  <script type="text/javascript" src="${ctx }/thirdmodule/ztree35/jquery.ztree.all-3.5.min.js"></script>
+ <script type="text/javascript" src="${ctx }/js/code.js"></script>
 <link href="${ctx }/thirdmodule/ztree35/css/zTreeStyle.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
+<script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>

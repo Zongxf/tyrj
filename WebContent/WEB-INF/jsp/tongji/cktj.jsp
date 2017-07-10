@@ -13,7 +13,7 @@
 <body>
      <div class="container center">
        <div class="searchBox center">
-       <div class="form-inline">
+       <div class="form-inline"> 
        <div>
        <label class="control-label" > 起始日期：</label>
        <input type="text" id="dateb" onclick="WdatePicker({startDate: '%y-%M-01 00:00:00' ,maxDate:'#F{$dp.$D(\'datee\')}',dateFmt:'yyyy-MM-dd HH:mm:ss'})">至
@@ -124,51 +124,17 @@
         
         
         
-        function f_save() {  
-              	var data="";
-              	var title="";
-              	var count="";
+     function f_save() {  
               	var lx = $("#lx").val();
               	var czy = $("#czy").val();
               	var dateb = $("#dateb").val();
               	var datee = $("#datee").val();
-              	if(lx!=""){
-              		data =data+ "lx:"+lx+"&";
-              	}
-              	if(czy!=""){
-              		data =data+"czy:"+czy+"&";
-              	}
-              	if(dateb!=""){
-              		data =data+"dateb:"+dateb+"&";
-              	}
-              	if(datee!=""){
-              		data =data+"datee:"+datee+"&";
-              	}
-              	
-              	
-              	
-                  
-              	 title = "存款统计&存款类型&存款金额&操作员";
-                  $.ajax({  
-                      url: '${ctx}/export_new/exportCkmx.do',  
-                      data: {  
-                      	"data":data,"title":title,"count":count
-                      },
-                      type:"post",
-                      dataType:"json",
-                      success: function (data) {  
-                      	if(data.success){
-                      		//alert(data.fileName);
-                      		window.location.href="${ctx}/export_new/downloadFile.do";
-                      	}else{
-                      		alert("导出失败！");
-                      	}
-                      },  
-                      error: function (message) {  
-                      	alert(message);  
-                      }  
-                  });  
-              }
+                var dqczy = "<%=session.getAttribute("username")%>";
+                var time=h+"-"+m+"-"+d;
+               var url = "${ctx}/ReportServer?reportlet=cktj.cpt&dateb="+dateb+"&datee="+datee+"&lx="+lx+"&czy="+czy+"&p1="+dqczy+"&p2="+time;
+              
+               	 window.open(url); 
+              } 
           
         //打印
          function doprint(){

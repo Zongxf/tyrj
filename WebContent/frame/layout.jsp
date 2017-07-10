@@ -48,7 +48,7 @@ var tab = null;
 				 <c:forEach items= "${sessionScope.nodelist}"   var= "node">
 				 {id: '${node.id}', pid: '${node.pid}',isexpand:false,<c:if test="${not empty node.url}">url:'${ctx }/${node.url}',</c:if> text: '${node.text}'},
 				 </c:forEach> 
-				{id: '999', pid: '0',isexpand:false,url: '${ctx }/user/changePasswd.do', text: '修改密码'}
+				{id: '2.1.1', pid: '2.1',isexpand:false,url: '${ctx }/user/changePasswd.do', text: '修改密码'}
 			]; 
 		
 
@@ -89,33 +89,13 @@ var tab = null;
 		index=url.indexOf("?")+3;
 		ss=url.substr(index);
 		
-		//alert(ss);
+		/* //alert(ss);
 		if(ss=="super"){
 			document.getElementById("role").innerHTML="超级管理员";
-		}else{
+		}else{ */
 			document.getElementById("role").innerHTML=ss;
-		}
-		
-		
-		var xjck = "<%= session.getAttribute("xjbh")%>";
-		var ryye = "<%= session.getAttribute("ryye")%>";
-		var qcje = "<%= session.getAttribute("qcbh")%>";
-		if(xjck!="null"){
-			$("#xjck").val(xjck);
-		}else{
-			$("#xjck").val("0.0");
-		}
-		if(ryye!="null"){
-			$("#ryye").val(ryye);
-		}else{
-			$("#ryye").val("0.0");
-		}
-		
-		if(qcje!="null"){
-			$("#qcje").val(qcje);
-		}else{
-			$("#qcje").val("0.0");
-		}
+		//}
+		showAll();
 		
 	});
 	
@@ -136,39 +116,32 @@ var tab = null;
 	}
 	
 	
-	window.setInterval(showAll, 60000); 
+   window.setInterval(showAll, 1000); 
 	function showAll(){
-		$.ajax({
-			url:"${ctx}/timer/showAll.do",
-			type:"post",
-			dataType:"json",
-			success:function(){
-				var xjck = "<%= session.getAttribute("xjbh")%>";
-				var ryye = "<%= session.getAttribute("ryye")%>";
-				var qcje = "<%= session.getAttribute("qcbh")%>";
-				if(xjck!="null"){
-					$("#xjck").val(xjck);
-				}else{
-					$("#xjck").val("0.0");
-				}
-				if(ryye!="null"){
-					$("#ryye").val(ryye);
-				}else{
-					$("#ryye").val("0.0");
-				}
-				
-				if(qcje!="null"){
-					$("#qcje").val(qcje);
-				}else{
-					$("#qcje").val("0.0");
-				}
-			},
-			error:function(){
-				alert("定时器加载失败！");
-			}
-		});
-	
-	}
+		var myDate = new Date();
+		var m = myDate.getMonth()+1;//月
+		var d = myDate.getDate();//日
+		var h = myDate.getHours();//时
+		var mi = myDate.getMinutes()//分
+		var s = myDate.getSeconds();//秒
+		if(m<10){
+			m = "0"+m;
+		}
+		if(d<10){
+			d = "0"+d;
+		}
+		if(h<10){
+			h = "0"+h;
+		}
+		if(mi<10){
+			mi = "0"+mi;
+		}
+		if(s<10){
+			s = "0"+s;
+		}
+		var hehe= myDate.getFullYear()+"-"+m+"-"+d+"  "+h+":"+mi+":"+s;
+		document.getElementById("datetime").innerHTML="时间："+hehe;
+	}  
 	
 	
 	
@@ -251,7 +224,7 @@ body {
 .l-topmenu {
 	margin: 0;
 	padding: 0;
-	height: 50px;
+	height: 70px;
 	line-height: 50px;
 	background: url('${ctx }/img/top.jpg') repeat-x bottom;
 	position: relative;
@@ -300,20 +273,16 @@ body {
 </head>
 <body style="padding: 0px; background: #EAEEF5;">
 	<div id="pageloading"></div>
+	
 	<div id="topmenu" class="l-topmenu">
 		<div class="l-topmenu-logo">${appname }</div>
-		<div class="l-topmenu-dsq">
-		     现金存款<input type="text"id="xjck"value="" disabled="disabled"/>
-		    圈存金额<input type="text"id="qcje" value=""disabled="disabled"/>
-		    日营业额<input type="text"id="ryye"value=""disabled="disabled"/></div>
+		
 		<div class="l-topmenu-welcome">
 			<span class="space">欢迎，<span id="role"></span>&nbsp;&nbsp;|
-			
-			<%-- <c:if test="${userInfo.Gly_no eq 'super'}">管理员</c:if> --%>
-
-			
 			</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="space"> <a href="${ctx }/user/logout.do"> 注销 </a>
-			</span>
+			</span><br/>
+			<span id="datetime" class="space"></span>
+			
 		</div>
 	</div>
 	<div id="layout1" style="width: 99.2%; margin: 0 auto; margin-top: 4px;">

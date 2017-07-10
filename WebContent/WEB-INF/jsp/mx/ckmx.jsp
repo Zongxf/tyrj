@@ -9,6 +9,7 @@
 <script type="text/javascript" src="${ctx }/jquery/json2.js"></script>
 <script type="text/javascript"src="${ctx }/thirdmodule/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx }/js/LodopFuncs.js"></script>
+
 </head>
 <body>
 	<div class="container center">
@@ -160,59 +161,19 @@
         }
         
         function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
+        
         	var lx = $("#lx").val();
         	var bh = $("#bh").val();
         	var xm = $("#xm").val();
         	var dateb = $("#dateb").val();
         	var datee = $("#datee").val();
-        	if(lx!=""){
-        		data =data+ "lx:"+lx+"&";
-        	}
-        	if(bh!=""){
-        		data =data+"bh:"+bh+"&";
-        	}
-        	if(xm!=""){
-        		data =data+"xm:"+xm+"&";
-        	}
-        	if(dateb!=""){
-        		data =data+"dateb:"+dateb+"&";
-        	}
-        	if(datee!=""){
-        		data =data+"datee:"+datee+"&";
-        	}
-        	
-        	
-        	
-            
-            title = "存款明细&人员编号&姓名&部门&存款金额&剩余金额&存款日期&存款类型&";
-            var zckje = $("#zckje").val();
-            //alert(zckje);
-    	    if(zckje==""){
-    	    	zckje="0";
-    	    }
-            count = "存款总金额：&"+zckje+"&";
-            $.ajax({  
-                url: '${ctx}/export_new/exportCkmx.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export_new/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
+        	 var dqczy = "<%=session.getAttribute("username")%>";
+             var time=year+"-"+month+"-"+strDate;
+            var url = cjkEncode("${ctx}/ReportServer?reportlet=ckmx.cpt&dateb="+dateb+"&datee="+datee+"&lx="
+            		+lx+"&p1="+dqczy+"&p2="+time+"&bh="+bh+"&xm="+xm);
+           
+            	 window.open(url); 
+        
         }
         
         

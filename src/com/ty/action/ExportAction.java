@@ -41,6 +41,10 @@ public class ExportAction extends BaseAction{
 	    private NutDao dao;
         private Download download = new Download();
         
+        Date now = new Date(); 
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	String he = dateFormat.format( now ); 
+        
         
     	public String fileName ="";
 
@@ -52,7 +56,7 @@ public class ExportAction extends BaseAction{
 	    @At()
 		@Ok("json")
 		@Filters
-		public Map<String, Object> exportCktj(String data,String title, String count,HttpServletRequest req)
+		public Map<String, Object> exportCktj(String data,String title, String count,String dqczy,HttpServletRequest req)
 		{   
 	    	//初始化列表
 	        HSSFWorkbook wb = new HSSFWorkbook();  
@@ -68,6 +72,9 @@ public class ExportAction extends BaseAction{
              //统计
              String [] tj;
              tj = count.split("&");
+             
+             String [] dd;
+             dd = dqczy.split("&");
              //获取当前系统时间做文件名
             Date now = new Date(); 
          	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -117,30 +124,51 @@ public class ExportAction extends BaseAction{
 		         font.setFontName("宋体");  
 		         font.setFontHeight((short) 200);  
 		         cellStyle.setFont(font);  
-		         HSSFRow row1 = sheet.createRow(0);  
+		         HSSFRow row0 = sheet.createRow(0);  
 		         
-		         HSSFCell row1Cell = null;  
+		         HSSFCell row0Cell = null;  
 		         int m = 1;  
 		  
+		         row0Cell = row0.createCell(0);  
+                 row0Cell.setCellStyle(cellStyle);  
+                 row0Cell.setCellValue(new HSSFRichTextString(tt[0]));  
+                 
+                 HSSFRow row1 = sheet.createRow(1);  
+		         HSSFCell row1Cell = null;  
+		         row1Cell = row1.createCell(0);  
+                 row1Cell.setCellStyle(cellStyle);  
+                 row1Cell.setCellValue(new HSSFRichTextString(dd[0]+dd[1])); 
+                 
+                 row1Cell = row1.createCell(1);  
+                 row1Cell.setCellStyle(cellStyle);  
+                 row1Cell.setCellValue(new HSSFRichTextString("时间：")); 
+                 row1Cell = row1.createCell(2);  
+                 row1Cell.setCellStyle(cellStyle);  
+                 row1Cell.setCellValue(new HSSFRichTextString(he)); 
+                 
+                 if(!"".equals(tj[0])){
+		        	 row1Cell = row1.createCell(1);  
+	                 row1Cell.setCellStyle(cellStyle);  
+	                 row1Cell.setCellValue(new HSSFRichTextString(tj[0])); 
+	                 row1Cell = row1.createCell(2);  
+	                 row1Cell.setCellStyle(cellStyle);  
+	                 row1Cell.setCellValue(new HSSFRichTextString(tj[1])); 
+		         }
+                 
+                 HSSFRow row2 = sheet.createRow(2);  
+		         HSSFCell row2Cell = null;  
 		         // 创建不同的列标题  
 		         for (int i = 0; i < number; i = i + 1) {  
 		             
 		             if (i <=  number) {  
-		                 row1Cell = row1.createCell(i);  
-		                 row1Cell.setCellStyle(cellStyle);  
-		                 row1Cell.setCellValue(new HSSFRichTextString(tt[m]  
+		                 row2Cell = row2.createCell(i);  
+		                 row2Cell.setCellStyle(cellStyle);  
+		                 row2Cell.setCellValue(new HSSFRichTextString(tt[m]  
 		                         .toString()));  
 		                 m++;  
 		             }
 		         }
-		         if(!"".equals(tj[0])){
-		        	 row1Cell = row1.createCell(number);  
-	                 row1Cell.setCellStyle(cellStyle);  
-	                 row1Cell.setCellValue(new HSSFRichTextString(tj[0])); 
-	                 row1Cell = row1.createCell(number+1);  
-	                 row1Cell.setCellStyle(cellStyle);  
-	                 row1Cell.setCellValue(new HSSFRichTextString(tj[1])); 
-		         }
+		        
 		         //创建内容行
 		         HSSFCell rowCell = null;
 	        	 HSSFRow row=null;
@@ -149,7 +177,7 @@ public class ExportAction extends BaseAction{
 	        		 for(int i=0;i<aa.length;i++){
 			        	 
 			        	 if(i%number==0){
-			        	  row = sheet.createRow(i/number+1);
+			        	  row = sheet.createRow(i/number+3);
 			        	 }
 			        	 rowCell = row.createCell(i%number);  
 		                 rowCell.setCellStyle(cellStyle);  

@@ -31,7 +31,16 @@
     <url-pattern>/PictureCheckCodeServlet</url-pattern>  
   </servlet-mapping> 
   
- 
+   
+    <!-- 配置fineReport服务 -->
+    <servlet>
+        <servlet-name>ReportServer</servlet-name>
+        <servlet-class>com.fr.web.ReportServlet</servlet-class>
+    </servlet>  
+    <servlet-mapping>
+        <servlet-name>ReportServer</servlet-name>
+        <url-pattern>/ReportServer</url-pattern>
+    </servlet-mapping>
   
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>

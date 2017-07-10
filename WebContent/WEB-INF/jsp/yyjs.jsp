@@ -63,6 +63,9 @@ height:78%;
 	           </form>
            </div>
            <div class="contentBox center">
+             <div><span>原始存款金额：</span><input type="text"disabled="disabled"id="yce"value="${ysyje}"/>
+             <span>剩余存款金额：</span><input type="text"disabled="disabled"id="xce"value="${xsyje}"/>
+             <span>收支平衡监测：</span><input type="text"disabled="disabled"id="phyc"value="${phyc}"/></div>
 	         <table>
 	             <tr>
 	              <th class="c">栏目</th>
@@ -116,36 +119,16 @@ height:78%;
         
          //导出excel
         function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
-            
-            	   var tt = document.getElementsByTagName("td");
-            	   for(var i=0;i<tt.length;i++){
-            		   //alert(tt[i].innerHTML);
-            		   data =data+ tt[i].innerHTML+"&";
-            	   }
-          
-            title = "营业结算&栏目&开户&撤户&挂失办卡&现金存款&圈存&补助存款&取款&营业额&";
-            $.ajax({  
-                url: '${ctx}/export/exportCktj.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
+          var dateb = $("#dateb").val();
+          var datee = $("#datee").val();
+          var yce = $("#yce").val();
+          var xce = $("#xce").val();
+          var phyc = $("#phyc").val();
+          var dqczy = "<%=session.getAttribute("username")%>";
+          var time=year+"-"+month+"-"+strDate;
+         var url = cjkEncode("${ctx}/ReportServer?reportlet=yyjs.cpt&dateb="+dateb+"&datee="+datee+"&p1="+dqczy+"&p2="+time+"&p3="+yce+"&p4="+xce+"&p5="+phyc);
+        
+         	 window.open(url); 
         } 
          
          

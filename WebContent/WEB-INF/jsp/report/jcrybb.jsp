@@ -146,55 +146,17 @@
         
         
         function exportXml() {
-        	var data="";
-        	var title="";
-        	var count="";
+        	
         	var bh = $("#bh").val();
         	var xm = $("#xm").val();
         	var dateb = $("#dateb").val();
         	var datee = $("#datee").val();
-        	if(bh!=""){
-        		data =data+"rybh:"+bh+"&";
-        	}
-        	if(xm!=""){
-        		data =data+"xm:"+xm+"&";
-        	}
-        	if(dateb!=""){
-        		data =data+"dateb:"+dateb+"&";
-        	}
-        	if(datee!=""){
-        		data =data+"datee:"+datee+"&";
-        	}
+        	 var dqczy = "<%=session.getAttribute("username")%>";
+             var time=year+"-"+month+"-"+strDate;
+            var url = cjkEncode("${ctx}/ReportServer?reportlet=jcrybb.cpt&dateb="+dateb+"&datee="+datee+"&p1="+dqczy+"&p2="+time+"&rybh="+bh+"&xm="+xm);
+           
+            	 window.open(url); 
         	
-        	
-        	
-            
-
-            title = "纠错人员报表&人员编号&姓名&部门&变化金额&纠错金额&原始金额&纠错日期&卡号&";
-            var zjcrs = $("#zjcrs").val();
-    	    if(zjcrs==""){
-    	    	zjcrs="0";
-    	    }
-            count = "纠错总人数：&"+zjcrs+"&";
-            $.ajax({  
-                url: '${ctx}/export_new/exportCkmx.do',  
-                data: {  
-                	"data":data,"title":title,"count":count
-                },
-                type:"post",
-                dataType:"json",
-                success: function (data) {  
-                	if(data.success){
-                		//alert(data.fileName);
-                		window.location.href="${ctx}/export_new/downloadFile.do";
-                	}else{
-                		alert("导出失败！");
-                	}
-                },  
-                error: function (message) {  
-                	alert(message);  
-                }  
-            });  
         } 
         
         //打印
