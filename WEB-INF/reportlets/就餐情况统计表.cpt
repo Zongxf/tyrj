@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20151125" releaseVersion="8.0.0">
+<TableDataMap>
+<TableData name="ds1" class="com.fr.data.impl.DBTableData">
+<Parameters/>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[FRDemo]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[select g.zrs ,h.zc,cast(((h.zc*1.00)/g.zrs)*100 as decimal(18,2)) as zcl,
+  g.zrs-h.zc as fzc,cast((((g.zrs-h.zc)*1.00)/g.zrs)*100 as decimal(18,2)) as fzcl,
+  i.wc,cast(((i.wc*1.00)/g.zrs)*100 as decimal(18,2)) as wcl,
+  g.zrs-i.wc as fwc,cast((((g.zrs-i.wc)*1.00)/g.zrs)*100 as decimal(18,2)) as fwcl,
+j.wwc,cast(((j.wwc*1.00)/g.zrs)*100 as decimal(18,2)) as wwcl,
+ g.zrs-j.wwc as fwwc,cast((((g.zrs-j.wwc)*1.00)/g.zrs)*100 as decimal(18,2)) as fwwcl,
+k.jbc,cast(((k.jbc*1.00)/g.zrs)*100 as decimal(18,2)) as jbcl,
+l.fsd, cast(((l.fsd*1.00)/g.zrs)*100 as decimal(18,2)) as fsdl,
+t.zzw, cast(((t.zzw*1.00)/g.zrs)*100 as decimal(18,2)) as zzwl,
+g.zrs-t.zzw as fzzw, cast((((g.zrs-t.zzw)*1.00)/g.zrs)*100 as decimal(18,2)) as fzzwl
+from (select count(a.alluser) as zrs from (select distinct user_serial as alluser from dt_user ) a) g,
+(select COUNT(b.name) as zc from (select distinct xm as name from view_dz_jcxqb where zc != '0' and jysj>='${dateb}' and jysj<='${datee}') b) h,
+(select COUNT(c.name) as wc from (select distinct xm as name from view_dz_jcxqb where wc != '0' and jysj>='${dateb}' and jysj<='${datee}') c) i,
+(select COUNT(d.name) as wwc from (select distinct xm as name from view_dz_jcxqb where wwc != '0' and jysj>='${dateb}' and jysj<='${datee}') d) j,
+(select COUNT(e.name) as jbc from (select distinct xm as name from view_dz_jcxqb where jbc != '0' and jysj>='${dateb}' and jysj<='${datee}') e) k,
+(select COUNT(f.name) as fsd from (select distinct xm as name from view_dz_jcxqb where fsd != '0' and jysj>='${dateb}' and jysj<='${datee}') f) l,
+(select COUNT(s.name) as zzw from (select distinct xm as name from view_dz_jcxqb where zc != '0' and jysj>='${dateb}' and jysj<='${datee}' and wc != '0' and wwc!='0') s) t ]]></Query>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[4686300,4419600,4419600,5143500,5181600,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" cs="5" s="0">
+<O>
+<![CDATA[就餐情况统计表]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="1" s="1">
+<O>
+<![CDATA[操作员：]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="1" s="2">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=$p1]]></Attributes>
+</O>
+<PrivilegeControl/>
+<CellPageAttr/>
+<CellInsertPolicy>
+<InsertPolicy>
+<![CDATA[copy]]></InsertPolicy>
+</CellInsertPolicy>
+<Expand/>
+</C>
+<C c="2" r="1" s="3">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="1" s="1">
+<O>
+<![CDATA[时间：]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="1" s="2">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=$p2]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="2" s="0">
+<O>
+<![CDATA[操作项目]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="2" s="0">
+<O>
+<![CDATA[早餐]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="2" s="0">
+<O>
+<![CDATA[午餐]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="2" s="0">
+<O>
+<![CDATA[晚餐]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="2" s="0">
+<O>
+<![CDATA[早中晚三餐]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="3" s="0">
+<O>
+<![CDATA[未就餐人数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="3" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fzc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="3" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fwc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="3" r="3" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fwwc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="3" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fzzw"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="0" r="4" s="0">
+<O>
+<![CDATA[未就餐比率（%）]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="4" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fzcl"/>
+<Condition class="com.fr.data.condition.ListCondition"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<CellGUIAttr>
+<ToolTipText>
+<![CDATA[%]]></ToolTipText>
+</CellGUIAttr>
+<CellPageAttr/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="4" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fwcl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="3" r="4" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fwwcl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="4" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="fzzwl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="0" r="5" s="0">
+<O>
+<![CDATA[就餐人数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="5" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="zc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="5" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="wc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="3" r="5" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="wwc"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="5" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="zzw"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="0" r="6" s="0">
+<O>
+<![CDATA[就餐比率（%）]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="6" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="zcl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="6" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="wcl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="3" r="6" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="wwcl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="4" r="6" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="zzwl"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting/>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-16777216"/>
+<Bottom style="1" color="-16777216"/>
+<Left style="1" color="-16777216"/>
+<Right style="1" color="-16777216"/>
+</Border>
+</Style>
+<Style horizontal_alignment="4" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-16777216"/>
+<Bottom style="1" color="-16777216"/>
+<Left style="1" color="-16777216"/>
+<Right style="1" color="-16777216"/>
+</Border>
+</Style>
+<Style horizontal_alignment="2" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1" color="-16777216"/>
+<Bottom style="1" color="-16777216"/>
+<Left style="1" color="-16777216"/>
+<Right style="1" color="-16777216"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="IAA"/>
+<PreviewType PreviewType="0"/>
+<TemplateID TemplateID="f36eb7e2-2247-4b41-ae72-faee3aab2fd5"/>
+</WorkBook>
