@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<system>
+<module text="报表管理" id="1" pid="0">
+    <module text="营业结算" id="1.1" pid="1">
+        <node text="营业结算" id="1.1.1" pid="1.1" url="query/query.do">
+        </node>
+    </module>
+     <module text="账目统计" id="1.2" pid="1">
+        <node text="存款统计" id="1.2.1" pid="1.2" url="query/queryCktj.do">
+        </node>
+        <node text="小组营业统计" id="1.2.2" pid="1.2" url="query/queryXzyytj.do">
+        </node>
+    </module>
+    <module text="账目明细" id="1.3" pid="1">
+        <node text="存款明细" id="1.3.1" pid="1.3" url="query/queryCkmx.do">
+        </node>
+        <node text="取款明细" id="1.3.2" pid="1.3" url="query/queryQkmx.do">
+        </node>
+        <node text="消费明细" id="1.3.3" pid="1.3" url="query/queryXfmx.do">
+        </node>
+        <node text="计次明细" id="1.3.4" pid="1.3" url="query/queryXfjcmx.do">
+        </node>
+    </module>
+    <module text="账目报表" id="1.4" pid="1">
+        <node text="开户人员报表" id="1.4.1" pid="1.4" url="report/khrybbReport.do">
+        </node>
+        <node text="挂失办卡人员报表" id="1.4.2" pid="1.4" url="report/gsbkrybReport.do">
+        </node>
+        <node text="撤户人员报表" id="1.4.3" pid="1.4" url="report/chrybbReport.do">
+        </node>
+        <node text="纠错人员报表" id="1.4.4" pid="1.4" url="report/jcrybbReport.do">
+        </node>
+        
+    </module>
+    
+  </module>
+  <module text="系统管理" id="2" pid="0">
+      <module text="用户管理" id="2.1" pid="2">
+       <!--  <node text="参数管理" id="2.1.1" pid="2.1" url="report/jcrybbReport.do">
+        </node>
+        <node text="权限管理" id="2.1.1" pid="2.1" url="report/jcrybbReport.do">
+        </node> -->
+    </module>
+  </module>
+  <module text="海安定制报表" id="3" pid="0">
+     <module text="圈存报表" id="3.1" pid="3">
+         <node text="圈存对账明细" id="3.1.1" pid="3.1" url="queryha/queryQcdzmx.do">
+        </node>
+        <node text="水控个人圈存汇总" id="3.1.2" pid="3.1" url="queryha/queryGrqchz.do">
+        </node>
+        <node text="圈存对账表" id="3.1.3" pid="3.1" url="queryha/queryQcdzb.do">
+        </node>
+       <!--   <node text="设备圈存表" id="3.1.4" pid="3.1" url="queryha/querySbqchz.do">
+        </node> -->
+    </module>
+    
+    <module text="营业报表" id="3.2" pid="3">
+         <node text="营业明细表" id="3.2.1" pid="3.2" url="queryha/queryYymxb.do">
+        </node>
+         <node text="营业汇总表" id="3.2.2" pid="3.2" url="queryha/queryYyhzb.do">
+        </node>
+        <node text="管理员日志" id="3.2.3" pid="3.2" url="queryha/queryGlyrz.do">
+        </node>
+    </module>
+    
+    <module text="其他报表" id="3.3" pid="3">
+         <node text="退款表" id="3.3.1" pid="3.3" url="queryha/queryTkb.do">
+        </node>
+         <node text="出纳报表" id="3.3.2" pid="3.3" url="queryha/queryCnbb.do">
+        </node>
+        <node text="就餐情况统计表" id="3.3.3" pid="3.3" url="queryha/queryJcqktjb.do">
+        </node>
+        <node text="就餐详情表" id="3.3.4" pid="3.3" url="queryha/queryJcxqb.do">
+        </node>
+         <node text="窗口餐别日报" id="3.3.5" pid="3.3" url="queryha/queryCkcbrb.do">
+        </node>
+        <!--  <node text="系统总表" id="3.3.6" pid="3.3" url="queryha/queryXtzb.do">
+        </node> -->
+        <node text="撤户表" id="3.3.7" pid="3.3" url="queryha/queryChb.do">
+        </node>
+       <!--   <node text="部门汇总表" id="3.3.8" pid="3.3" url="queryha/queryBmhzb.do">
+        </node> -->
+        <node text="挂失卡余额查询" id="3.3.9" pid="3.3" url="queryha/queryGskyecx.do">
+        </node>
+    </module>
+  </module>
+    <!-- <module text="11" id="3" pid="0">
+        <node text="人员管理" id="3.1" pid="3" url="user/listUser.do">
+            <auth name="userlist" button=".add.del.edit.empower"/>
+        </node>
+
+    </module> -->
+</system>
